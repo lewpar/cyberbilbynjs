@@ -13,7 +13,7 @@ model Post {
   title        String   @default("") @db.VarChar(128)
   author       Author   @relation(fields: [authorId], references: [id])
   content      String   @db.Text
-  shortContent String   @default("") @db.VarChar(128)
+  shortContent String   @default("") @db.VarChar(512)
   date         DateTime @default(now()) @db.Timestamp(0)
   authorId     Int
 
