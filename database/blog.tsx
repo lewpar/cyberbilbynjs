@@ -48,3 +48,20 @@ export async function getBlogShortPosts(): Promise<BlogShortPost[]> {
         return new BlogShortPost(p.author.name, p.slug, p.title, p.shortContent, p.date)
     });
 }
+
+export async function getFeaturedBlogShortPosts(): Promise<BlogShortPost[]> {
+    let prisma = getPrisma();
+
+    let posts = await prisma.post.findMany({
+        where: {
+            featured: true
+        },
+        include: {
+            author: true
+        }
+    });
+    
+    return posts.map(p => {
+        return new BlogShortPost(p.author.name, p.slug, p.title, p.shortContent, p.date)
+    });
+}

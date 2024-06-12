@@ -1,18 +1,23 @@
-import { getFeaturedBlogShortPosts } from "@/database/blog";
+import { getBlogShortPosts } from "@/database/blog";
 import { BlogShortPost } from "@/database/models/BlogShortPost";
 
-export default async function Page() {
+export default async function Page({ params }: { params: { page: number } }) {
+    let posts: BlogShortPost[] = await getBlogShortPosts();
 
-    let posts: BlogShortPost[] = await getFeaturedBlogShortPosts();
-    let totalPosts: number = 5;
+    let pageNumber = Number(params.page || 1);
+    let postsPerPage = 5;
 
-    let featured: BlogShortPost[] = posts.slice(0, totalPosts);
+    let totalPages = Math.ceil(posts.length / postsPerPage);
+
+    let indexStart = postsPerPage * (pageNumber - 1);
+    let indexEnd = pageNumber * postsPerPage;
+
+    let paginated: BlogShortPost[] = posts.slice(indexStart, indexEnd);
 
     return (
         <div className="flex flex-col gap-4 p-4">
-            <div className="text-xl font-bold">Featured</div>
             {
-                featured.map((post, id) => 
+                paginated.map((post, id) => 
                     <div key={id} className="flex flex-col border-2 p-4 bg-white gap-2">
                         <div className="text-xl font-bold">
                             {post.title}
@@ -28,7 +33,12 @@ export default async function Page() {
                     </div>
                 )
             }
-            <a className="text-blue-800" href={`/blog/1/`}>All Posts</a>
+            {
+                totalPages > 1 && pageNumber < totalPages ? <a href={`/blog/${pageNumber + 1}`}>Next Page</a> : ''
+            }
+            {
+                pageNumber > 1 ? <a href={`/blog/${pageNumber - 1}`}>Previous Page</a> : ''
+            }
         </div>
     );
 }

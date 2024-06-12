@@ -10,6 +10,7 @@ datasource db {
 model Post {
   id           Int      @id
   slug         String   @default("") @db.VarChar(128)
+  featured     Boolean  @default(false)
   title        String   @default("") @db.VarChar(128)
   author       Author   @relation(fields: [authorId], references: [id])
   content      String   @db.Text
