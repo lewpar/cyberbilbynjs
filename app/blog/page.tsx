@@ -24,11 +24,13 @@ export default async function Page() {
                         <div>
                             {post.shortContent}
                         </div>
-                        <a href={`/blog/post/${post.slug}`} className="text-blue-800">Read More</a>
+                        <a href={`/blog/post/${post.slug}`} className="nice-link">Read More</a>
                     </div>
                 )
             }
-            <a className="text-blue-800" href={`/blog/1/`}>All Posts</a>
+            <div className="flex flex-row items-center justify-center">
+                <a className="nice-link" href={`/blog/1/`}>All Posts</a>
+            </div>
         </div>
     );
 }

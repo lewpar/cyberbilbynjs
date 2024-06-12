@@ -38,6 +38,9 @@ header ul li:hover {
 }
 
 main {
+    display: flex;
+    flex-direction: column;
+
     flex: 1;
 }
 
@@ -52,4 +55,15 @@ footer {
     background-color: rgb(0, 0, 0);
 
     padding: 1rem;
+}
+
+/* CONTROLS */
+
+.nice-link {
+    color: black;
+
+    transition: color 0.25s;
+}
+.nice-link:hover {
+    color: #21C4FF;
 }

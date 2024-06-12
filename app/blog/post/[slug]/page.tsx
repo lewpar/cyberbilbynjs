@@ -1,10 +1,11 @@
 import { getBlogPost } from "@/database/blog";
 import { BlogPost } from "@/database/models/BlogPost";
+import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { slug: string } }) {
     let post: (BlogPost | null) = await getBlogPost(params.slug);
     if(post == null) {
-        return (<div>No post found with that name.</div>);
+        notFound();
     }
 
     var showdown = require('showdown'),
