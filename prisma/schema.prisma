@@ -7,16 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model posts {
-  id      Int       @id
-  slug    String    @default("") @db.VarChar(128)
-  title   String    @default("") @db.VarChar(128)
-  author  Int       @default(0)
-  content String    @db.Text
-  date    DateTime? @default(now()) @db.Timestamp(0)
+model Post {
+  id           Int      @id
+  slug         String   @default("") @db.VarChar(128)
+  title        String   @default("") @db.VarChar(128)
+  author       Author   @relation(fields: [authorId], references: [id])
+  content      String   @db.Text
+  shortContent String   @default("") @db.VarChar(128)
+  date         DateTime @default(now()) @db.Timestamp(0)
+  authorId     Int
+
+  @@map("posts")
 }
 
-model authors {
+model Author {
   id   Int    @id @default(0)
   name String @default("") @db.VarChar(50)
+  Post Post[]
+
+  @@map("authors")
 }
