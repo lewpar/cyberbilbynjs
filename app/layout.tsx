@@ -36,7 +36,16 @@ export default function RootLayout({
             {children}
             </main>
             <footer>
-                CyberBilby &copy; 2024
+                <div className="flex flex-row gap-4 items-center justify-center">
+                    <div>CyberBilby &copy; 2024</div>
+                    <a href="https://github.com/lewpar/" className="flex flex-row gap-1 bg-white p-1 rounded-3xl">
+                        <Image 
+                            src="/images/github-mark.png" 
+                            width={20} height={20} 
+                            alt="GitHub Profile"
+                        />
+                    </a>
+                </div>
             </footer>
         </body>
     </html>
