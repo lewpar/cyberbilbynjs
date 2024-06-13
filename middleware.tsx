@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { auth } from './auth';
  
-export function middleware(req: NextRequest) {
-    let path = req.nextUrl.pathname;
+export async function middleware(req: NextRequest) {
+    let session = await auth();
+    let path = req.nextUrl.basePath;
 
     if(path.startsWith('/blog/create')) {
-        return NextResponse.rewrite(new URL('/not-allowed', req.url), { status: 401 })
+        if(session == null) {
+            return NextResponse.rewrite(new URL('/not-allowed', req.url), { status: 401 })
+        }
     }
 
     return NextResponse.next()
