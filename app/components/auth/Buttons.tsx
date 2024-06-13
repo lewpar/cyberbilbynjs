@@ -15,10 +15,12 @@ async function logout(event: FormEvent<HTMLFormElement>) {
     await signOut();
 }
 
+const style: string = "flex flex-row gap-2 p-1 border-2 rounded-md items-center justify-center bg-white text-black text-xs";
+
 export function LoginButton() {
     return (
         <form onSubmit={login}>
-            <button type="submit" className="flex flex-row gap-2 p-2 border-2 rounded-md items-center justify-center bg-white text-black">
+            <button type="submit" className={style}>
                 <i className="ph ph-sign-in"></i>
                 <div>Login</div>
             </button>
@@ -29,7 +31,7 @@ export function LoginButton() {
 export function LogoutButton() {
     return (
         <form onSubmit={logout}>
-            <button type="submit" className="flex flex-row gap-2 p-2 border-2 rounded-md items-center justify-center bg-white text-black">
+            <button type="submit" className={style}>
                 <i className="ph ph-sign-out"></i>
                 <div>Logout</div>
             </button>

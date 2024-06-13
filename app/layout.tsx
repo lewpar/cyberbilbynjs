@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from 'next/image'
-import { auth } from "@/auth";
+import { isSessionValid } from "@/auth";
 
 import { LoginButton, LogoutButton } from "./components/auth/Buttons";
+import SessionCard from "./components/auth/SessionCard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+    let isLoggedIn = await isSessionValid();
 
-    let session = await auth();
-    
     return (
         <html lang="en">
             <body className={inter.className}>
@@ -36,16 +36,10 @@ export default async function RootLayout({
                     <ul>
                         <a href="/" className="flex flex-row gap-1 items-center justify-center"><i className="ph ph-house"></i><li>Home</li></a>
                         <a href="/blog" className="flex flex-row gap-1 items-center justify-center"><i className="ph ph-newspaper"></i><li>Blog</li></a>
+                        {
+                            isLoggedIn ? <a href="/blog/create" className="flex flex-row gap-1 items-center justify-center"><i className="ph ph-note-pencil"></i><li>Create Post</li></a> : ''
+                        }
                     </ul>
-                    {
-                        session != null ? 
-                        <div className="flex flex-row gap-4">
-                            <LogoutButton/>
-                        </div> : 
-                        <div>
-                            <LoginButton/>
-                        </div>
-                    }
                 </header>
                 <main>
                 {children}
@@ -61,6 +55,16 @@ export default async function RootLayout({
                                 alt="GitHub Profile"
                             />
                         </a>
+                        {
+                            isLoggedIn ? 
+                            <div className="flex flex-row gap-4">
+                                <SessionCard/>
+                                <LogoutButton/>
+                            </div> : 
+                            <div>
+                                <LoginButton/>
+                            </div>
+                        }
                     </div>
                 </footer>
             </body>

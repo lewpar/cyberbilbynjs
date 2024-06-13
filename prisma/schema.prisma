@@ -22,9 +22,10 @@ model Post {
 }
 
 model Author {
-  id   Int    @id @default(0)
-  name String @default("") @db.VarChar(50)
-  Post Post[]
+  id    Int    @id @default(0)
+  name  String @default("") @db.VarChar(50)
+  email String @default("") @db.VarChar(128)
+  Post  Post[]
 
   @@map("authors")
 }

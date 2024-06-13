@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { BlogPost } from "./models/BlogPost";
 import { BlogShortPost } from "./models/BlogShortPost"
 import { getPrisma } from "./prisma";
@@ -103,5 +104,31 @@ export async function createPost(title: string, slug: string, shortContent: stri
         return false;
     }
     
+    return true;
+}
+
+export async function isAuthorizedAuthor(): Promise<boolean> {
+    let session = await auth();
+
+    if(!session) {
+        return false;
+    }
+
+    if(!session.user?.email) {
+        return false;
+    }
+
+    let prisma = getPrisma();
+
+    let result = prisma.author.findFirst({
+        where: {
+            email: session?.user?.email
+        }
+    });
+
+    if(!result) {
+        return false;
+    }
+
     return true;
 }

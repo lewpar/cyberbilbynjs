@@ -5,8 +5,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [github],
 });
 
-export async function isLoggedIn(): Promise<boolean> {
+export async function isSessionValid(): Promise<boolean> {
     let session = await auth();
 
-    return session != null;
+    if(!session) {
+        return false;
+    }
+
+    return true;
 }
