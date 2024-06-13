@@ -28,9 +28,10 @@ export default function RootLayout({
                     <span className="text-xl">Cyber Bilby</span>
                 </a>
                 <ul>
-                    <a href="/"><li>Home</li></a>
-                    <a href="/blog"><li>Blog</li></a>
+                    <a href="/" className="flex flex-row gap-1 items-center justify-center"><i className="ph ph-house"></i><li>Home</li></a>
+                    <a href="/blog" className="flex flex-row gap-1 items-center justify-center"><i className="ph ph-newspaper"></i><li>Blog</li></a>
                 </ul>
+                <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
             </header>
             <main>
             {children}

@@ -28,12 +28,12 @@ header ul {
 
     gap: 1rem;
 }
-header ul li {
+header ul a {
     color: white;
 
     transition: color 0.25s;
 }
-header ul li:hover {
+header ul a:hover {
     color: #21C4FF;
 }
 
