@@ -4,6 +4,8 @@ import "./globals.css";
 import Image from 'next/image'
 import { auth } from "@/auth";
 
+import { LoginButton, LogoutButton } from "./components/auth/Buttons";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -38,11 +40,10 @@ export default async function RootLayout({
                     {
                         session != null ? 
                         <div className="flex flex-row gap-4">
-                            {session.user?.name}
-                            <a href="/logout">Logout</a>
+                            <LogoutButton/>
                         </div> : 
                         <div>
-                            <a href="/login">Login</a>
+                            <LoginButton/>
                         </div>
                     }
                 </header>
