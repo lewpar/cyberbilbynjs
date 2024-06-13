@@ -67,3 +67,23 @@ footer {
 .nice-link:hover {
     color: #21C4FF;
 }
+
+.nice-field {
+    border: 1px solid black;
+    border-radius: 2px;
+
+    padding: 0.25rem;
+}
+
+.nice-button {
+    border: 1px solid black;
+    color: black;
+
+    padding: 0.5rem;
+
+    transition: color 0.25s, border 0.25s;
+}
+.nice-button:disabled {
+    border: 1px solid gray;
+    color: gray;
+}

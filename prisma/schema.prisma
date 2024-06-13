@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Post {
-  id           Int      @id
+  id           Int      @id @default(autoincrement())
   slug         String   @default("") @db.VarChar(128)
   featured     Boolean  @default(false)
   title        String   @default("") @db.VarChar(128)
