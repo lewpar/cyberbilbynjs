@@ -27,8 +27,8 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
                     <NavMenu isLoggedIn={await isSessionValid()}/>
                 </header>
                 <main>
-                {children}
-                <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
+                    {children}
+                    <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
                 </main>
                 <footer className="bg-slate-900">
                     <div className="flex flex-row gap-4 items-center justify-center">

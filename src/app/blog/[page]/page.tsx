@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: { page: string } }) {
     let paginated: BlogShortPost[] = posts.slice(indexStart, indexEnd);
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 p-4 w-3/4 self-center">
             {
                 paginated.length < 1 ? 'No posts found.' : ''
             }

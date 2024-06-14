@@ -13,12 +13,10 @@ export default async function Page() {
     let featured: BlogShortPost[] = posts.slice(0, totalPosts);
 
     return (
-        <div className="flex flex-col gap-4 p-4">
-            <div className="text-xl font-bold">Featured</div>
+        <div className="flex flex-col gap-4 p-4 w-3/4 self-center">
             { 
                 isAuthorized ?
-                <div className="flex flex-col border-r-2">
-                    <div>Author Controls</div>
+                <div className="flex flex-col">
                     <Button 
                         text="Create Post"
                         href="/blog/create"
@@ -26,6 +24,7 @@ export default async function Page() {
                     />
                 </div> : ''
             }
+            <div className="text-xl font-bold">Featured</div>
             {
                 featured.map((post, id) => 
                     <ShortPost
