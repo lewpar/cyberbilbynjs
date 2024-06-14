@@ -1,5 +1,5 @@
 import { getBlogShortPosts } from "@/database/blog";
-import { BlogShortPost } from "@/database/models/BlogShortPost";
+import { BlogShortPost } from "@/database/models/BlogTypes";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { page: string } }) {
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: { page: string } }) {
                             <div>{post.date.toLocaleDateString()}</div>
                         </div>
                         <div>
-                            {post.shortContent}
+                            {post.content}
                         </div>
                         <a href={`/blog/post/${post.slug}`} className="nice-link">Read More</a>
                     </div>

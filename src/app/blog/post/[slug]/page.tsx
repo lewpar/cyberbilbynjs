@@ -1,5 +1,5 @@
 import { getBlogPost } from "@/database/blog";
-import { BlogPost } from "@/database/models/BlogPost";
+import { BlogPost } from "@/database/models/BlogTypes";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { slug: string } }) {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Image from 'next/image'
+
 import { isSessionValid } from "@/auth";
 
 import { LoginButton, LogoutButton } from "./components/auth/Buttons";
