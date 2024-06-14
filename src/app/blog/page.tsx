@@ -31,13 +31,15 @@ export default async function Page() {
                 <div className="text-xl font-bold">Featured</div>
                 <div className="flex flex-row gap-4">
                     {
+                        featuredPosts.length > 0 ?
                         featuredPosts.map((post, id) => 
                             <div className="flex-1" key={id}>
                                 <ShortPost
                                     post={post}
                                 />
                             </div>
-                        )
+                        ) :
+                        <div>There are no featured posts.</div>
                     }
                 </div>
             </div>
@@ -45,12 +47,14 @@ export default async function Page() {
                 <div className="text-xl font-bold">Recent</div>
                 <div className="flex flex-col gap-4">
                     {
+                        recentPosts.length > 0 ?
                         recentPosts.map((post, id) => 
                             <ShortPost
                                 key={id}
                                 post={post}
                             />
-                        )
+                        ) :
+                        <div>There are no recent posts.</div>
                     }
                 </div>
             </div>

@@ -22,9 +22,7 @@ export default async function Page({ params }: { params: { page: string } }) {
     return (
         <div className="flex flex-col gap-4 p-4 w-3/4 self-center">
             {
-                paginated.length < 1 ? 'No posts found.' : ''
-            }
-            {
+                paginated.length > 0 ?
                 paginated.map((post, id) => 
                     <div key={id} className="flex flex-col border-2 p-4 bg-white gap-2">
                         <div className="text-xl font-bold">
@@ -39,8 +37,10 @@ export default async function Page({ params }: { params: { page: string } }) {
                         </div>
                         <a href={`/blog/post/${post.slug}`} className="nice-link">Read More</a>
                     </div>
-                )
+                ) :
+                <div>There are no posts.</div>
             }
+
             <div className="flex flex-row gap-4 items-center justify-center">
             {
                 pageNumber > 1 ? <a className="nice-link" href={`/blog/${pageNumber - 1}`}>Previous Page</a> : ''
