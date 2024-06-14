@@ -4,11 +4,11 @@ import "./globals.css";
 
 import { isSessionValid } from "@/auth";
 
-import { LoginButton, LogoutButton } from "./components/auth/Buttons";
 import SessionCard from "./components/auth/SessionCard";
 import NavMenu from "./components/NavMenu";
 import Logo from "./components/Logo";
 import Socials from "./components/Socials";
+import { GitHubLoginButton, LogoutButton } from "./components/auth/Buttons";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,7 +42,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
                                 <LogoutButton/>
                             </div> : 
                             <div>
-                                <LoginButton/>
+                                <GitHubLoginButton mode="dark"/>
                             </div>
                         }
                     </div>

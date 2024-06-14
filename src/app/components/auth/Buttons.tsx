@@ -1,40 +1,39 @@
 'use client';
 
-import { signIn, signOut } from "next-auth/react";
-import { FormEvent } from "react";
+import { loginWithGithub, logout } from "@/lib/auth";
+import Image from 'next/image';
 
-async function login(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+export function GitHubLoginButton({ mode }: { mode: string }) {
+    let githubIcon = "/images/github-mark.png";
 
-    await signIn();
-}
+    if(mode === "dark") {
+        githubIcon = "/images/github-mark-white.png";
+    }
 
-async function logout(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+    let onClick = async () => {
+        await loginWithGithub();
+    };
 
-    await signOut();
-}
-
-const style: string = "flex flex-row gap-2 p-1 border-2 rounded-md items-center justify-center bg-white text-black text-xs";
-
-export function LoginButton() {
     return (
-        <form onSubmit={login}>
-            <button type="submit" className={style}>
-                <i className="ph ph-sign-in"></i>
-                <div>Login</div>
-            </button>
-        </form>
+        <button onClick={onClick} className="flex flex-row gap-2 p-2 rounded-md items-center border border-slate-800 bg-slate-900 text-sm">
+            <Image 
+                src={githubIcon}
+                width={24} height={24}
+                alt="GitHub Logo"
+            />
+            <div>Login with GitHub</div>
+        </button>
     );
 }
 
 export function LogoutButton() {
+    let onClick = async () => {
+        await logout();
+    };
+
     return (
-        <form onSubmit={logout}>
-            <button type="submit" className={style}>
-                <i className="ph ph-sign-out"></i>
-                <div>Logout</div>
-            </button>
-        </form>
+        <button onClick={onClick} className="flex flex-row gap-2 p-4 rounded-md">
+            <div>Logout</div>
+        </button>
     );
 }
