@@ -17,11 +17,7 @@ export const metadata: Metadata = {
   description: "Personal blog",
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
     let isLoggedIn = await isSessionValid();
 
     return (
