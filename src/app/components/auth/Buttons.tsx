@@ -32,7 +32,7 @@ export function LogoutButton() {
     };
 
     return (
-        <button onClick={onClick} className="flex flex-row gap-2 p-2 rounded-md hover:text-blue-500 transition items-center">
+        <button onClick={onClick} className="flex flex-row gap-2 p-2 rounded-md text-white hover:text-blue-500 transition items-center">
             <i className="ph ph-sign-out"></i>
             <div>Logout</div>
         </button>
