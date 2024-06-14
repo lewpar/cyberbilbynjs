@@ -1,6 +1,6 @@
 import { getBlogShortPosts, getFeaturedBlogShortPosts, isAuthorizedAuthor } from "@/lib/blog";
 import { BlogShortPost } from "@/models/BlogTypes"
-import Button from "../components/Button";
+import { RouteButton } from "../components/Buttons";
 import ShortPost from "../components/blog/ShortPost";
 
 export default async function Page() {
@@ -19,7 +19,7 @@ export default async function Page() {
                 <div className="flex flex-col">
                     <div className="text-xl font-bold">Actions</div>
                     <div className="flex flex-row gap-1">
-                        <Button 
+                        <RouteButton 
                             text="Create Post"
                             href="/blog/create"
                             icon="ph ph-note-pencil"
