@@ -28,6 +28,9 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     let posts = await prisma.post.findMany({
         include: {
             author: true
+        },
+        orderBy: {
+            date: 'desc'
         }
     });
     
@@ -42,6 +45,9 @@ export async function getBlogShortPosts(): Promise<BlogShortPost[]> {
     let posts = await prisma.post.findMany({
         include: {
             author: true
+        },
+        orderBy: {
+            date: 'desc'
         }
     });
     
@@ -59,6 +65,9 @@ export async function getFeaturedBlogShortPosts(): Promise<BlogShortPost[]> {
         },
         include: {
             author: true
+        },
+        orderBy: {
+            date: 'desc'
         }
     });
     
