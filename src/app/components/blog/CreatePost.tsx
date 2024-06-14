@@ -42,6 +42,8 @@ export default function CreatePost() {
     
     return (
         <form onSubmit={submitPost} method="POST" className="flex flex-col gap-4 p-4">
+            <div className="text-2xl font-bold">Create Post</div>
+
             <div className="flex flex-col gap-1">
                 <label htmlFor="title" className="font-bold">Title</label>
                 <p>The title of the blog post which will show up on the front page.</p>
