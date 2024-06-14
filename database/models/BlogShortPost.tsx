@@ -1,15 +1,3 @@
 export class BlogShortPost {
-    author: string;
-    slug: string;
-    title: string;
-    shortContent: string;
-    date: Date;
-
-    constructor(author: string, slug: string, title: string, shortContent: string, date: Date) {
-        this.author = author;
-        this.slug = slug;
-        this.title = title;
-        this.shortContent = shortContent;
-        this.date = date;
-    }
+    constructor(public author: string, public slug: string, public title: string, public shortContent: string, public date: Date) {}
 }
