@@ -63,7 +63,7 @@ export default function CreatePost() {
             <div className="flex flex-col gap-1">
                 <label htmlFor="content" className="font-bold">Content</label>
                 <p>The content of the post.</p>
-                <input type="text" name="content" className="nice-field"></input>
+                <textarea name="content" className="nice-field" rows="10"></textarea>
             </div>
 
             <div className="flex flex-col gap-1">
