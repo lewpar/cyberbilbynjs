@@ -1,8 +1,6 @@
 import { auth } from "@/auth";
-import { BlogPost } from "./models/BlogPost";
-import { BlogShortPost } from "./models/BlogShortPost"
 import { getPrisma } from "./prisma";
-import { Prisma } from "@prisma/client";
+import { BlogPost, BlogShortPost } from "./models/BlogTypes";
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     let prisma = getPrisma();
@@ -20,7 +18,13 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
         return null;
     }
 
-    return new BlogPost(post?.author.name, post.slug, post.title, post.content, post.date)
+    return {
+        author: post.author.name, 
+        slug: post.slug, 
+        title: post.title, 
+        content: post.content, 
+        date: post.date
+    } as BlogPost;
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
@@ -36,7 +40,13 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     });
     
     return posts.map(p => {
-        return new BlogPost(p.author.name, p.slug, p.title, p.content, p.date)
+        return {
+            author: p.author.name, 
+            slug: p.slug, 
+            title: p.title, 
+            content: p.content, 
+            date: p.date
+        } as BlogPost;
     });
 }
 
@@ -53,7 +63,13 @@ export async function getBlogShortPosts(): Promise<BlogShortPost[]> {
     });
     
     return posts.map(p => {
-        return new BlogShortPost(p.author.name, p.slug, p.title, p.shortContent, p.date)
+        return {
+            author: p.author.name, 
+            slug: p.slug, 
+            title: p.title, 
+            content: p.shortContent, 
+            date: p.date
+        } as BlogPost;
     });
 }
 
@@ -73,7 +89,13 @@ export async function getFeaturedBlogShortPosts(): Promise<BlogShortPost[]> {
     });
     
     return posts.map(p => {
-        return new BlogShortPost(p.author.name, p.slug, p.title, p.shortContent, p.date)
+        return {
+            author: p.author.name, 
+            slug: p.slug, 
+            title: p.title, 
+            content: p.shortContent, 
+            date: p.date
+        } as BlogPost;
     });
 }
 
