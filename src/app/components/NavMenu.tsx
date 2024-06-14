@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from "next/navigation";
+import { GitHubLoginButton, LogoutButton } from "./auth/Buttons";
 
 function NavButton({ text, href, icon }: { text: string, href: string, icon: string }) {
     const path = usePathname();
@@ -19,10 +20,10 @@ function NavButton({ text, href, icon }: { text: string, href: string, icon: str
     );
 }
 
-export default function NavMenu() {
+export default function NavMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
     return (
-        <ul className="flex flex-col gap-1">
-            <div className="flex flex-row gap-4">
+        <ul className="flex flex-row gap-1">
+            <div className="flex flex-1 flex-row gap-4 items-center">
                 <li>
                     <NavButton
                         text="Home"
@@ -38,6 +39,14 @@ export default function NavMenu() {
                         icon="ph ph-newspaper"
                     />
                 </li>
+            </div>
+
+            <div className="flex flex-row gap-4 items-center">
+                {
+                    isLoggedIn ? 
+                    <LogoutButton/> :
+                    <GitHubLoginButton mode="dark"/>
+                }
             </div>
         </ul>
     );

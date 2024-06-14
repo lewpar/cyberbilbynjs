@@ -9,6 +9,7 @@ import NavMenu from "./components/NavMenu";
 import Logo from "./components/Logo";
 import Socials from "./components/Socials";
 import { GitHubLoginButton, LogoutButton } from "./components/auth/Buttons";
+import { isAuthorizedAuthor } from "@/lib/blog";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,14 +19,12 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
-    let isLoggedIn = await isSessionValid();
-
     return (
         <html lang="en">
             <body className={inter.className}>
-                <header className="items-center">
+                <header className="flex flex-col gap-4">
                     <Logo/>
-                    <NavMenu/>
+                    <NavMenu isLoggedIn={await isSessionValid()}/>
                 </header>
                 <main>
                 {children}
@@ -35,16 +34,6 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
                     <div className="flex flex-row gap-4 items-center justify-center">
                         <div>CyberBilby &copy; 2024</div>
                         <Socials/>
-                        {
-                            isLoggedIn ? 
-                            <div className="flex flex-row gap-4">
-                                <SessionCard/>
-                                <LogoutButton/>
-                            </div> : 
-                            <div>
-                                <GitHubLoginButton mode="dark"/>
-                            </div>
-                        }
                     </div>
                 </footer>
             </body>
