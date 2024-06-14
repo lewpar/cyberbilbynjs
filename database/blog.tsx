@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { BlogPost } from "./models/BlogPost";
 import { BlogShortPost } from "./models/BlogShortPost"
 import { getPrisma } from "./prisma";
+import { Prisma } from "@prisma/client";
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     let prisma = getPrisma();
