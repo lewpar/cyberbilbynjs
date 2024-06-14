@@ -6,10 +6,10 @@ import { GitHubLoginButton, LogoutButton } from "./auth/Buttons";
 function NavButton({ text, href, icon }: { text: string, href: string, icon: string }) {
     const path = usePathname();
 
-    let style = "flex flex-row gap-1 items-center text-white hover:text-blue-500 transition";
+    let style = "flex flex-row gap-1 items-center text-slate-400 hover:text-slate-100 transition";
 
     if(href == path) {
-        style = "flex flex-row gap-1 items-center text-blue-500 hover:text-blue-500 transition";
+        style = "flex flex-row gap-1 items-center text-slate-100 hover:text-slate-100 transition";
     }
 
     return (
@@ -22,7 +22,7 @@ function NavButton({ text, href, icon }: { text: string, href: string, icon: str
 
 export default function NavMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
     return (
-        <ul className="flex flex-row gap-1 bg-slate-950 p-4">
+        <ul className="flex flex-row bg-slate-950 p-4">
             <div className="flex flex-1 flex-row gap-4 items-center">
                 <li>
                     <NavButton

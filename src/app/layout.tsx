@@ -26,7 +26,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
                     <Logo/>
                     <NavMenu isLoggedIn={await isSessionValid()}/>
                 </header>
-                <main>
+                <main className="bg-slate-100">
                     {children}
                     <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
                 </main>
