@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { getPrisma } from "./prisma";
-import { BlogPost, BlogShortPost } from "./models/BlogTypes";
+import { BlogPost, BlogShortPost } from "../models/BlogTypes";
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     let prisma = getPrisma();

@@ -1,5 +1,5 @@
-import { getBlogShortPosts } from "@/database/blog";
-import { BlogShortPost } from "@/database/models/BlogTypes";
+import { getBlogShortPosts } from "@/lib/blog";
+import { BlogShortPost } from "@/models/BlogTypes";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { page: string } }) {

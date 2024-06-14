@@ -1,5 +1,5 @@
-import { getFeaturedBlogShortPosts } from "@/database/blog";
-import { BlogShortPost } from "@/database/models/BlogTypes"
+import { getFeaturedBlogShortPosts } from "@/lib/blog";
+import { BlogShortPost } from "@/models/BlogTypes"
 
 export default async function Page() {
 

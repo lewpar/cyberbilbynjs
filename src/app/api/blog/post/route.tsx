@@ -1,4 +1,4 @@
-import { createPost, slugExists } from "@/database/blog";
+import { createPost, slugExists } from "@/lib/blog";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest) {

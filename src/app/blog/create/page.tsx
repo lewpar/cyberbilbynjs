@@ -1,5 +1,5 @@
 import CreatePost from "@/app/components/blog/CreatePost";
-import { isAuthorizedAuthor } from "@/database/blog";
+import { isAuthorizedAuthor } from "@/lib/blog";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
