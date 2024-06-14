@@ -8,7 +8,7 @@ export default function Logo() {
             width={128} height={128} 
             alt="CyberBilby Logo"
         />
-        <span className="text-xl">Cyber Bilby</span>
+        <span className="text-white text-xl">Cyber Bilby</span>
     </a>
     );
 }

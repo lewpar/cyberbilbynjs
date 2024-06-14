@@ -15,7 +15,7 @@ export function GitHubLoginButton({ mode }: { mode: string }) {
     };
 
     return (
-        <button onClick={onClick} className="flex flex-row gap-2 p-2 rounded-md items-center border border-slate-800 bg-slate-900 text-sm">
+        <button onClick={onClick} className="flex flex-row gap-2 p-2 rounded-md items-center border text-white border-slate-800 bg-slate-900 text-sm">
             <Image 
                 src={githubIcon}
                 width={24} height={24}

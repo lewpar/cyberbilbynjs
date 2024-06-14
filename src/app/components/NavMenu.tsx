@@ -22,7 +22,7 @@ function NavButton({ text, href, icon }: { text: string, href: string, icon: str
 
 export default function NavMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
     return (
-        <ul className="flex flex-row gap-1">
+        <ul className="flex flex-row gap-1 bg-slate-950 p-4">
             <div className="flex flex-1 flex-row gap-4 items-center">
                 <li>
                     <NavButton

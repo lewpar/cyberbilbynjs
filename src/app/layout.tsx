@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
-                <header className="flex flex-col gap-4">
+            <body className={`${inter.className} bg-slate-900`}>
+                <header className="flex flex-col gap-4 bg-slate-900">
                     <Logo/>
                     <NavMenu isLoggedIn={await isSessionValid()}/>
                 </header>
@@ -30,7 +30,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
                 {children}
                 <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
                 </main>
-                <footer>
+                <footer className="bg-slate-900">
                     <div className="flex flex-row gap-4 items-center justify-center">
                         <div>CyberBilby &copy; 2024</div>
                         <Socials/>
