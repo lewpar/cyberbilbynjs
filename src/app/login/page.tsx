@@ -9,8 +9,11 @@ export default async function Page({ searchParams }: { searchParams?: { [key: st
     }
     
     return (
-        <div>
-            <GitHubLoginButton redirect={ searchParams?.redirectTo as string ?? "/"}/>
+        <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="flex flex-col gap-2">
+                <div className="text-2xl">Login</div>
+                <GitHubLoginButton redirect={ searchParams?.redirectTo as string ?? "/"}/>
+            </div>
         </div>
     );
 }
