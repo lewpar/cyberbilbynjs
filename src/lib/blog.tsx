@@ -152,8 +152,6 @@ export async function createPost(title: string, slug: string, shortContent: stri
         }
     });
 
-    console.log(post);
-
     if(post == null) {
         return false;
     }
@@ -185,4 +183,8 @@ export async function isAuthorizedAuthor(): Promise<boolean> {
     }
 
     return true;
+}
+
+export async function getTotalPosts(): Promise<number> {
+    return await getPrisma().post.count();
 }
