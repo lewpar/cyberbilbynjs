@@ -192,7 +192,7 @@ export async function isAuthorizedAuthor(): Promise<boolean> {
 
     let prisma = getPrisma();
 
-    let result = prisma.author.findFirst({
+    let result = await prisma.author.findFirst({
         where: {
             email: session?.user?.email
         }

@@ -4,12 +4,9 @@ import "./globals.css";
 
 import { isSessionValid } from "@/auth";
 
-import SessionCard from "./components/auth/SessionCard";
 import NavMenu from "./components/NavMenu";
 import Logo from "./components/Logo";
 import Socials from "./components/Socials";
-import { GitHubLoginButton, LogoutButton } from "./components/auth/Buttons";
-import { isAuthorizedAuthor } from "@/lib/blog";
 
 const inter = Inter({ subsets: ["latin"] });
 
