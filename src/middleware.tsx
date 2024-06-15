@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const routes = [
+    "/api/author", 
+    "/author/create"
+]
+
 export async function middleware(request: NextRequest) {
     let pathName = request.nextUrl.pathname;
 
-    if(!pathName.startsWith("/api/author") && !pathName.startsWith("/author")) {
+    if(!routes.includes(pathName)) {
         return NextResponse.next();
     }
 
