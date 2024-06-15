@@ -1,13 +1,11 @@
 import ActionSidebar from "@/app/components/auth/AdminSidebar/ActionSidebar";
 import BlogDetails from "../components/auth/BlogDetails";
+import AdminPage from "../components/auth/AdminPage";
 
 export default function Page() {
     return (
-        <div className="flex-1 flex flex-col tablet:flex-row p-4">
-            <ActionSidebar/>
-            <div className="flex-1 p-4">
-                <BlogDetails/>
-            </div>
-        </div>
+        <AdminPage>
+            <BlogDetails/>
+        </AdminPage>
     );
 }
