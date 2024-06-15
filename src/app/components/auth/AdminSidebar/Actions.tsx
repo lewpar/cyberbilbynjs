@@ -20,6 +20,7 @@ export default function Actions() {
                 <ActionButton href="/author" text="Dashboard" icon="ph ph-browsers"/>
                 <ActionHeader text="Blog"/>
                 <ActionButton href="/author/create" text="Create Post" icon="ph ph-note-pencil"/>
+                <ActionButton href="/author/edit" text="Edit Post" icon="ph ph-eraser"/>
             </div>
         </div>
     );
