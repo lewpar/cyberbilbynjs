@@ -83,8 +83,14 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
         event.preventDefault();
 
         setHasError(false);
-        setError('');
+        setError("");
         setHasSucceeded(false);
+
+        if(currentPost == null) {
+            setHasError(true);
+            setError("There are no posts to edit.");
+            return;
+        }
 
         if(isPosting) {
             return;
@@ -148,7 +154,7 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
             </div>
             <div className="flex flex-col">
                 <label htmlFor="content" className="font-bold">Content</label>
-                <textarea name="content" rows={10} value={currentPost.content} onChange={onContentChanged} className="border-2 p-2"></textarea>
+                <textarea name="content" rows={10} value={ currentPost != null ? currentPost.content : "" } onChange={onContentChanged} className="border-2 p-2"></textarea>
             </div>
             <div className="flex flex-row gap-3">
                 <button type="submit" onClick={() => { clicked = "update" }} className="flex-1 border-2 bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 text-white p-4 rounded-md transition" disabled={isPosting}>Update</button>
