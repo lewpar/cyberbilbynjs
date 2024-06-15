@@ -75,14 +75,12 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ 
-        message: "Post Submitted"
+        message: "Post created"
     }, { status: 200 });
 }
 
 export async function PUT(req: NextRequest) {
     let data: FormData = await req.formData();
-
-    let changesMade = false;
     
     let slug = data.get("slug")?.toString();
     if(!slug || slug == undefined) {
@@ -102,7 +100,7 @@ export async function PUT(req: NextRequest) {
 
     let content = data.get("content")?.toString();
     if(content) {
-        let result = await prisma.post.update({
+        await prisma.post.update({
             where: {
                 id: id
             },
@@ -110,11 +108,45 @@ export async function PUT(req: NextRequest) {
                 content: content
             }
         });
-
-        changesMade = result.content == content;
     }
 
     return NextResponse.json({ 
-        message: "Post Updated"
+        message: "Post updated"
+    }, { status: 200 });
+}
+
+export async function DELETE(req: NextRequest) {
+    let data: FormData = await req.formData();
+    
+    let slug = data.get("slug")?.toString();
+    if(!slug || slug == undefined) {
+        return NextResponse.json({
+            message: "You must supply a slug."
+        }, { status: 400 });
+    }
+
+    let id = await getPostIdBySlug(slug);
+    if(id == null) {
+        return NextResponse.json({
+            message: "No post exists with that slug."
+        }, { status: 400 });
+    }
+
+    let prisma = getPrisma();
+
+    let result = await prisma.post.delete({
+        where: {
+            id: id
+        }
+    });
+
+    if(result == null) {
+        return NextResponse.json({
+            message: "No post exists with that slug."
+        }, { status: 400 });
+    }
+
+    return NextResponse.json({ 
+        message: "Post deleted"
     }, { status: 200 });
 }

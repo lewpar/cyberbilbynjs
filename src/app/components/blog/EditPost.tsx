@@ -4,14 +4,18 @@ import { BlogPost } from "@/models/BlogTypes";
 import { FormEvent, useState } from "react";
 
 export default function EditPost({ posts }: { posts: BlogPost[] }) {
+    let clicked: string = "";
+
+    let [blogPosts, setBlogPosts] = useState(posts);
     let [currentPost, setCurrentPost] = useState(posts[0]);
     let [hasError, setHasError] = useState(false);
-    let [error, setError] = useState('');
+    let [error, setError] = useState("");
     let [isPosting, setIsPosting] = useState(false);
     let [hasSucceeded, setHasSucceeded] = useState(false);
+    let [success, setSuccess] = useState("");
 
     let onSelectionChanged = (slug: string) => {
-        posts.forEach(post => {
+        blogPosts.forEach(post => {
             if(post.slug == slug) {
                 setCurrentPost(post);
             }
@@ -27,19 +31,6 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
     };
 
     let onUpdatePost = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        setHasError(false);
-        setError('');
-        setHasSucceeded(false);
-
-        // Wait for previous post to finish posting.
-        if(isPosting) {
-            return;
-        }
-
-        setIsPosting(true);
-    
         let formData = new FormData(event.currentTarget);
         formData.append("slug", currentPost.slug);
 
@@ -53,23 +44,75 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
             setHasError(true);
             setError(body.message);
             setIsPosting(false);
+            return false;
+        }
+
+        setSuccess("Post updated");
+        
+        return true;
+    };
+
+    let onDeletePost = async () => {
+        let formData = new FormData();
+        formData.append("slug", currentPost.slug);
+
+        const response = await fetch('/api/blog/post', {
+            method: 'DELETE',
+            body: formData,
+        });
+
+        let body = await response.json();
+        if(!response.ok) {
+            setHasError(true);
+            setError(body.message);
+            setIsPosting(false);
+            return false;
+        }
+
+        let newPosts = blogPosts.filter(post => post.slug != currentPost.slug);
+        setBlogPosts(newPosts);
+
+        setSuccess("Post deleted");
+        
+        return true;
+    };
+
+    let onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        setHasError(false);
+        setError('');
+        setHasSucceeded(false);
+
+        if(isPosting) {
             return;
         }
 
-        setHasSucceeded(true);
+        setIsPosting(true);
+
+        let succeeded = false;
+
+        if(clicked === "update") {
+            succeeded = await onUpdatePost(event);
+        }
+
+        if(clicked === "delete") {
+            succeeded = await onDeletePost();
+        }
+
+        setHasSucceeded(succeeded);
         setIsPosting(false);
-        //TODO: Send UPDATE request for updating post content.
     };
 
     return (
-        <form onSubmit={onUpdatePost} className="flex flex-col gap-4">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <div className="text-2xl font-bold">Edit Post</div>
 
             <div className="flex flex-col">
                 <label htmlFor="posts" className="font-bold">Posts</label>
                 <div className="flex flex-col gap-2 overflow-y-auto max-h-60">
                     {
-                        posts.map((post, id) => 
+                        blogPosts.map((post, id) => 
                             <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} 
                                     className={`p-3 border-2 ${post.slug == currentPost.slug ? "text-white bg-slate-800 border-slate-900" : "bg-white"}`}>
                                 <div className="flex flex-col">
@@ -95,9 +138,13 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                 <label htmlFor="content" className="font-bold">Content</label>
                 <textarea name="content" rows={10} value={currentPost.content} onChange={onContentChanged} className="border-2 p-2"></textarea>
             </div>
-            <button type="submit">Update</button>
+            <div className="flex flex-row gap-3">
+                <button type="submit" onClick={() => { clicked = "update" }} className="flex-1 border-2 bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 text-white p-4 rounded-md transition" disabled={isPosting}>Update</button>
+                <button type="submit" onClick={() => { clicked = "delete" }} className="border-2 bg-red-500 hover:bg-red-400 disabled:bg-red-100 text-white p-4 rounded-md transition" disabled={isPosting}>Delete Post</button>
+            </div>
+
             {hasError ? <p className="text-red-500">{`${error}`}</p> : ''}
-            {hasSucceeded ? <p className="text-lime-500">Post updated.</p> : ''}
+            {hasSucceeded ? <p className="text-lime-500">{`${success}`}</p> : ''}
         </form>
     );
 }

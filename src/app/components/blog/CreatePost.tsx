@@ -76,12 +76,12 @@ export default function CreatePost() {
                 <p>Shows the post on the blog featured page.</p>
             </div>
 
-            <div>
-                <button type="submit" className="nice-button" disabled={isPosting}>Create Post</button>
+            <div className="flex flex-row">
+                <button type="submit" className="flex-1 border-2 bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 text-white p-4 rounded-md transition" disabled={isPosting}>Create Post</button>
             </div>
 
             {hasError ? <p className="text-red-500">{`${error}`}</p> : ''}
-            {hasSucceeded ? <p className="text-lime-500">Post submitted.</p> : ''}
+            {hasSucceeded ? <p className="text-lime-500">Post created</p> : ''}
         </form>
     );
 }
