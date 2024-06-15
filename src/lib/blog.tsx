@@ -25,7 +25,8 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
         content: post.content, 
         shortContent: post.shortContent,
         date: post.date,
-        featured: post.featured
+        featured: post.featured,
+        coverImage: post.coverImage
     } as BlogPost;
 }
 
@@ -49,7 +50,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
             content: p.content, 
             shortContent: p.shortContent,
             date: p.date,
-            featured: p.featured
+            featured: p.featured,
+            coverImage: p.coverImage
         } as BlogPost;
     });
 }

@@ -120,7 +120,7 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                                 <div className="flex flex-row gap-2">
                                     <div className="flex items-center justify-center">
                                         <Image 
-                                            src={`/images/post/${post.slug}.png`}
+                                            src={`/images/post/${post.coverImage}`}
                                             width={128} height={64}
                                             className="rounded"
                                             alt="Cover Image"

@@ -6,6 +6,7 @@ export type BlogPost = {
     shortContent: string;
     date: Date;
     featured: boolean;
+    coverImage: string;
 }
 
 export type BlogShortPost = {
