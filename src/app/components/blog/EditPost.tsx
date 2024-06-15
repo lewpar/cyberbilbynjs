@@ -38,7 +38,7 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                 <div className="flex flex-col gap-2 overflow-y-auto max-h-60">
                     {
                         posts.map((post, id) => 
-                            <button key={id} onClick={(e) => { e.preventDefault(); onSelectionChanged(post.slug) }} className="p-2 border-2 bg-white">
+                            <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} className="p-2 border-2 bg-white">
                                 <div className="flex flex-col">
                                     {
                                         post.featured ? 
