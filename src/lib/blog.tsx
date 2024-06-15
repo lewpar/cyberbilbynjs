@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { getPrisma } from "./prisma";
-import { BlogPost, BlogShortPost } from "../models/BlogTypes";
+import { BlogPost, BlogShortPost, CreateBlogPost } from "../models/BlogTypes";
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     let prisma = getPrisma();
@@ -72,8 +72,9 @@ export async function getBlogShortPosts(): Promise<BlogShortPost[]> {
             slug: p.slug, 
             title: p.title, 
             content: p.shortContent, 
-            date: p.date
-        } as BlogPost;
+            date: p.date,
+            coverImage: p.coverImage
+        } as BlogShortPost;
     });
 }
 
@@ -98,8 +99,9 @@ export async function getFeaturedBlogShortPosts(): Promise<BlogShortPost[]> {
             slug: p.slug, 
             title: p.title, 
             content: p.shortContent, 
-            date: p.date
-        } as BlogPost;
+            date: p.date,
+            coverImage: p.coverImage
+        } as BlogShortPost;
     });
 }
 
@@ -151,7 +153,7 @@ async function getAuthorIdByEmail(email: string): Promise<number | null> {
     return result.id;
 }
 
-export async function createPost(title: string, slug: string, shortContent: string, content: string, isFeatured: boolean): Promise<boolean> {
+export async function createPost(post: CreateBlogPost): Promise<boolean> {
     let prisma = getPrisma();
     let session = await auth();
 
@@ -160,19 +162,20 @@ export async function createPost(title: string, slug: string, shortContent: stri
         return false;
     }
 
-    let post = await prisma.post.create({
+    let createdPost = await prisma.post.create({
         data: {
-            title: title,
-            slug: slug,
-            content: content,
-            shortContent: shortContent,
-            featured: isFeatured,
+            title: post.title,
+            slug: post.slug,
+            content: post.content,
+            shortContent: post.shortContent,
+            featured: post.featured,
             authorId: id,
-            date: new Date().toISOString()
+            date: new Date().toISOString(),
+            coverImage: post.coverImage
         }
     });
 
-    if(post == null) {
+    if(createdPost == null) {
         return false;
     }
     

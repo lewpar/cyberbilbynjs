@@ -7,7 +7,7 @@ export default function ShortPost({ post }: { post: BlogShortPost }) {
         <div className="flex flex-col tablet:flex-row">
             <div className="flex bg-white rounded-l items-center justify-center p-6">
                 <Image 
-                    src={`/images/post/${post.slug}.png`}
+                    src={`/images/post/${post.coverImage}`}
                     width={256} height={128}
                     className="rounded"
                     alt="Cover Image"

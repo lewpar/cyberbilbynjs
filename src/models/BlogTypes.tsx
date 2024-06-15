@@ -14,4 +14,14 @@ export type BlogShortPost = {
     title: string;
     content: string;
     date: Date;
+    coverImage: string;
+}
+
+export type CreateBlogPost = {
+    slug: string;
+    title: string;
+    content: string;
+    shortContent: string;
+    coverImage: string;
+    featured: boolean;
 }

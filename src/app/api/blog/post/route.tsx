@@ -55,19 +55,32 @@ export async function POST(req: NextRequest) {
         isFeatured = true;
     }
 
-    let result = await createPost(title, slug, shortContent, content, isFeatured); 
+    let guid = crypto.randomUUID();
+
+    let result = await createPost({
+        title: title,
+        slug: slug,
+        content: content,
+        shortContent: shortContent,
+        featured: isFeatured,
+        coverImage: `${guid}.png`
+    }); 
+
     if(!result) {
         return NextResponse.json({ 
             message: "An internal error occured."
         }, { status: 500 });
     }
 
+    // Only create the image on disk if the post was created.
     let coverImage = data.get("cover-image") as File;
     if(coverImage) {
         let buffer = Buffer.from(await coverImage.arrayBuffer());
         try {
             // TODO: (SECURITY) Generate a guid as file name and map it in database to protect against path traversal.
-            await writeFile(path.join(process.cwd(), `public/images/post/${slug}.png`), buffer);
+            let filePath = path.join(process.cwd(), `public/images/post/${guid}.png`)
+            console.log(filePath);
+            await writeFile(filePath, buffer);
         }
         catch(error) {
             console.log(`Failed to upload cover image with error ${error}`);

@@ -17,6 +17,7 @@ model Post {
   shortContent String   @default("") @db.VarChar(512)
   date         DateTime @default(now()) @db.Timestamp(0)
   authorId     Int
+  coverImage   String   @default("")
 
   @@map("posts")
 }
