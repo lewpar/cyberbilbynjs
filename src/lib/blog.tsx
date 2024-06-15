@@ -119,6 +119,22 @@ export async function slugExists(slug: string): Promise<boolean> {
     return true;
 }
 
+export async function getPostIdBySlug(slug: string): Promise<number | null> {
+    let prisma = getPrisma();
+
+    let result = await prisma.post.findFirst({
+        where: {
+            slug: slug
+        }
+    });
+
+    if(!result) {
+        return null;
+    }
+
+    return result.id;
+}
+
 async function getAuthorIdByEmail(email: string): Promise<number | null> {
     let prisma = getPrisma();
 

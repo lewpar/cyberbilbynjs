@@ -41,7 +41,7 @@ export default function CreatePost() {
     }
     
     return (
-        <form onSubmit={submitPost} method="POST" className="flex flex-col gap-4 p-4">
+        <form onSubmit={submitPost} method="POST" className="flex flex-col gap-4">
             <div className="text-2xl font-bold">Create Post</div>
 
             <div className="flex flex-col gap-1">

@@ -1,4 +1,5 @@
-import { createPost, slugExists } from "@/lib/blog";
+import { createPost, getPostIdBySlug, slugExists } from "@/lib/blog";
+import { getPrisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 function isSlugValid(slug: string): boolean {
@@ -16,7 +17,7 @@ function isSlugValid(slug: string): boolean {
     return true;
 }
 
-export async function POST(req:NextRequest) {
+export async function POST(req: NextRequest) {
     let data: FormData = await req.formData();
 
     let title = data.get("title")?.toString();
@@ -75,5 +76,45 @@ export async function POST(req:NextRequest) {
 
     return NextResponse.json({ 
         message: "Post Submitted"
+    }, { status: 200 });
+}
+
+export async function PUT(req: NextRequest) {
+    let data: FormData = await req.formData();
+
+    let changesMade = false;
+    
+    let slug = data.get("slug")?.toString();
+    if(!slug || slug == undefined) {
+        return NextResponse.json({
+            message: "You must supply a slug."
+        }, { status: 400 });
+    }
+
+    let id = await getPostIdBySlug(slug);
+    if(id == null) {
+        return NextResponse.json({
+            message: "No post exists with that slug."
+        }, { status: 400 });
+    }
+
+    let prisma = getPrisma();
+
+    let content = data.get("content")?.toString();
+    if(content) {
+        let result = await prisma.post.update({
+            where: {
+                id: id
+            },
+            data: {
+                content: content
+            }
+        });
+
+        changesMade = result.content == content;
+    }
+
+    return NextResponse.json({ 
+        message: "Post Updated"
     }, { status: 200 });
 }

@@ -5,14 +5,15 @@ import { FormEvent, useState } from "react";
 
 export default function EditPost({ posts }: { posts: BlogPost[] }) {
     let [currentPost, setCurrentPost] = useState(posts[0]);
-    let [selectedSlug, setSelectedSlug] = useState(posts[0].slug);
+    let [hasError, setHasError] = useState(false);
+    let [error, setError] = useState('');
+    let [isPosting, setIsPosting] = useState(false);
+    let [hasSucceeded, setHasSucceeded] = useState(false);
 
     let onSelectionChanged = (slug: string) => {
         posts.forEach(post => {
             if(post.slug == slug) {
-                console.log("slug found");
                 setCurrentPost(post);
-                setSelectedSlug(post.slug);
             }
         });
     };
@@ -25,32 +26,64 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
         setCurrentPost(newPost);
     };
 
-    let onUpdatePost = (event: FormEvent<HTMLFormElement>) => {
+    let onUpdatePost = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
+
+        setHasError(false);
+        setError('');
+        setHasSucceeded(false);
+
+        // Wait for previous post to finish posting.
+        if(isPosting) {
+            return;
+        }
+
+        setIsPosting(true);
+    
+        let formData = new FormData(event.currentTarget);
+        formData.append("slug", currentPost.slug);
+
+        const response = await fetch('/api/blog/post', {
+            method: 'PUT',
+            body: formData,
+        });
+
+        let body = await response.json();
+        if(!response.ok) {
+            setHasError(true);
+            setError(body.message);
+            setIsPosting(false);
+            return;
+        }
+
+        setHasSucceeded(true);
+        setIsPosting(false);
         //TODO: Send UPDATE request for updating post content.
     };
 
     return (
         <form onSubmit={onUpdatePost} className="flex flex-col gap-4">
+            <div className="text-2xl font-bold">Edit Post</div>
+
             <div className="flex flex-col">
-                <label htmlFor="posts">Select a post: </label>
+                <label htmlFor="posts" className="font-bold">Posts</label>
                 <div className="flex flex-col gap-2 overflow-y-auto max-h-60">
                     {
                         posts.map((post, id) => 
-                            <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} className="p-2 border-2 bg-white">
+                            <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} className="p-3 border-2 bg-white">
                                 <div className="flex flex-col">
                                     {
                                         post.featured ? 
-                                        <div className="flex flex-row gap-1 items-center font-bold p-1">
+                                        <div className="flex flex-row gap-1 items-center font-bold">
                                             <i className="ph ph-seal-warning"></i>
                                             <div>Featured</div>
                                         </div> : ""
                                     }
-                                    <div className="p-2 text-start">
+                                    <div className="text-start">
                                         <div className="text-lg font-bold">{post.title}</div>
                                         <div className="text-sm">Posted by {post.author} - {post.date.toLocaleDateString()}</div>
                                     </div>
+                                    <div className="text-sm italic text-gray-600 text-start">{post.shortContent}</div>
                                 </div>
                             </button>
                         )
@@ -58,10 +91,12 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                 </div>
             </div>
             <div className="flex flex-col">
-                <label htmlFor="content">Content</label>
-                <textarea rows={10} value={currentPost.content} onChange={onContentChanged} className="border-2 p-2"></textarea>
+                <label htmlFor="content" className="font-bold">Content</label>
+                <textarea name="content" rows={10} value={currentPost.content} onChange={onContentChanged} className="border-2 p-2"></textarea>
             </div>
             <button type="submit">Update</button>
+            {hasError ? <p className="text-red-500">{`${error}`}</p> : ''}
+            {hasSucceeded ? <p className="text-lime-500">Post updated.</p> : ''}
         </form>
     );
 }
