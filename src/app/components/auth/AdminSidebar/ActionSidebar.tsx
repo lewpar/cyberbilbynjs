@@ -4,7 +4,7 @@ import ActionHeader from "./ActionHeader";
 
 export default function ActionSidebar() {
     return (
-        <div className="flex flex-col text-white bg-slate-800 rounded-sm">
+        <div className="flex flex-col pb-4 text-white bg-slate-800 rounded-sm">
             <UserDetails/>
             <ActionButton href="/author" text="Dashboard" icon="ph ph-browsers"/>
             <ActionHeader text="Blog"/>

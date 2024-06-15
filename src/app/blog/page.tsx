@@ -13,7 +13,7 @@ export default async function Page() {
     let recentPosts: BlogShortPost[] = (await getBlogShortPosts()).slice(0, totalRecentPosts);
 
     return (
-        <div className="flex-1 flex flex-col gap-4 p-4 w-3/4 self-center">
+        <div className="flex-1 flex flex-col gap-4 p-4 tablet:w-3/4 self-center">
             { 
                 isAuthorized ?
                 <div className="flex-1 flex flex-col">
