@@ -13,21 +13,21 @@ export default async function Page() {
     let recentPosts: BlogShortPost[] = (await getBlogShortPosts()).slice(0, totalRecentPosts);
 
     return (
-        <div className="flex flex-col gap-4 p-4 w-3/4 self-center">
+        <div className="flex-1 flex flex-col gap-4 p-4 w-3/4 self-center">
             { 
                 isAuthorized ?
-                <div className="flex flex-col">
+                <div className="flex-1 flex flex-col">
                     <div className="text-xl font-bold">Actions</div>
                     <div className="flex flex-row gap-1">
                         <RouteButton 
                             text="Create Post"
-                            href="/blog/create"
+                            href="/author/create"
                             icon="ph ph-note-pencil"
                         />
                     </div>
                 </div> : ''
             }
-            <div className="flex flex-col gap-1">
+            <div className="flex-1 flex flex-col gap-1">
                 <div className="text-xl font-bold">Featured</div>
                 <div className="flex flex-row gap-4">
                     {
@@ -43,7 +43,7 @@ export default async function Page() {
                     }
                 </div>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex-1 flex flex-col gap-1">
                 <div className="text-xl font-bold">Recent</div>
                 <div className="flex flex-col gap-4">
                     {
@@ -58,9 +58,12 @@ export default async function Page() {
                     }
                 </div>
             </div>
-            <div className="flex flex-row items-center justify-center">
-                <a className="nice-link" href={`/blog/1/`}>View All Posts</a>
-            </div>
+            {
+                (featuredPosts.length > 0 || recentPosts.length > 0) ?
+                <div className="flex flex-row items-center justify-center">
+                    <a className="nice-link" href={`/blog/1/`}>View All Posts</a>
+                </div> : ''
+            }
         </div>
     );
 }

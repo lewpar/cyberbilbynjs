@@ -115,8 +115,30 @@ export async function slugExists(slug: string): Promise<boolean> {
     return true;
 }
 
+async function getAuthorIdByEmail(email: string): Promise<number | null> {
+    let prisma = getPrisma();
+
+    let result = await prisma.author.findFirst({
+        where: {
+            email: email
+        }
+    });
+
+    if(result == null) {
+        return null;
+    }
+
+    return result.id;
+}
+
 export async function createPost(title: string, slug: string, shortContent: string, content: string, isFeatured: boolean): Promise<boolean> {
     let prisma = getPrisma();
+    let session = await auth();
+
+    let id = await getAuthorIdByEmail(session?.user?.email!);
+    if(id == null) {
+        return false;
+    }
 
     let post = await prisma.post.create({
         data: {
@@ -125,7 +147,7 @@ export async function createPost(title: string, slug: string, shortContent: stri
             content: content,
             shortContent: shortContent,
             featured: isFeatured,
-            authorId: 1,
+            authorId: id,
             date: new Date().toISOString()
         }
     });

@@ -1,14 +1,7 @@
-import { createPost, isAuthorizedAuthor, slugExists } from "@/lib/blog";
+import { createPost, slugExists } from "@/lib/blog";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest) {
-    let isAuthorized = await isAuthorizedAuthor();
-    if(!isAuthorized) {
-        return NextResponse.json({
-            message: "You are not authorized to access this resource."
-        }, { status: 401 });
-    }
-
     let data: FormData = await req.formData();
 
     let title = data.get("title")?.toString();
