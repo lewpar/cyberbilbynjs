@@ -103,7 +103,7 @@ export async function getFeaturedBlogShortPosts(): Promise<BlogShortPost[]> {
     });
 }
 
-export async function slugExists(slug: string): Promise<boolean> {
+export async function postExistsWithSlug(slug: string): Promise<boolean> {
     let prisma = getPrisma();
 
     let post = await prisma.post.findFirst({

@@ -1,64 +1,50 @@
-import { createPost, getPostIdBySlug, slugExists } from "@/lib/blog";
+import { createPost, getPostIdBySlug, postExistsWithSlug } from "@/lib/blog";
 import { getPrisma } from "@/lib/prisma";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 
-function isSlugValid(slug: string): boolean {
-    if(!slug) {
-        return false;
-    }
-
-    let regex = new RegExp("^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$");
-    let result = regex.test(slug);
-
-    if(!result) {
-        return false;
-    }
-
-    return true;
-}
-
 export async function POST(req: NextRequest) {
     let data: FormData = await req.formData();
 
     let title = data.get("title")?.toString();
-    if(!title || title == undefined) {
+    if(!title || title == undefined || title.length < 1 || title.length > 128) {
         return NextResponse.json({
-            message: "You must supply a title."
+            message: "You must supply a title between 0 and 128 characters."
         }, { status: 400 });
     }
 
     let slug = data.get("slug")?.toString();
-    if(!slug || slug == undefined) {
+    if(!slug || slug == undefined || slug.length < 1 || slug.length > 128) {
         return NextResponse.json({
-            message: "You must supply a slug."
+            message: "You must supply a slug between 0 and 128 characters."
         }, { status: 400 });
     }
 
-    if(!isSlugValid(slug)) {
+    let slugPattern = new RegExp("^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$");
+    if(!slugPattern.test(slug)) {
         return NextResponse.json({
             message: "Slugs should only contain alphanumeric characters with dashes and no spaces."
         }, { status: 400 });
     }
 
-    if(await slugExists(slug)) {
+    if(await postExistsWithSlug(slug)) {
         return NextResponse.json({
             message: "A post with that slug already exists."
         }, { status: 400 });
     }
 
     let shortContent = data.get("short-content")?.toString();
-    if(!shortContent || shortContent == undefined) {
+    if(!shortContent || shortContent == undefined || shortContent.length < 1 || shortContent.length > 256) {
         return NextResponse.json({
-            message: "You must supply short content."
+            message: "You must supply short content between 0 and 256 characters."
         }, { status: 400 });
     }
 
     let content = data.get("content")?.toString();
-    if(!content || content == undefined) {
+    if(!content || content == undefined || content.length < 1 || content.length > 65536) {
         return NextResponse.json({
-            message: "You must supply content."
+            message: "You must supply content between 0 and 65,536 characters."
         }, { status: 400 });
     }
 
@@ -101,9 +87,9 @@ export async function PUT(req: NextRequest) {
     let data: FormData = await req.formData();
     
     let slug = data.get("slug")?.toString();
-    if(!slug || slug == undefined) {
+    if(!slug || slug == undefined || slug.length < 1 || slug.length > 128) {
         return NextResponse.json({
-            message: "You must supply a slug."
+            message: "You must supply a slug between 0 and 128 characters."
         }, { status: 400 });
     }
 
@@ -118,6 +104,12 @@ export async function PUT(req: NextRequest) {
 
     let content = data.get("content")?.toString();
     if(content) {
+        if(content.length < 1 || content.length > 65536) {
+            return NextResponse.json({
+                message: "You must supply content between 0 and 65,536 characters."
+            }, { status: 400 });
+        }
+
         await prisma.post.update({
             where: {
                 id: id
@@ -137,9 +129,9 @@ export async function DELETE(req: NextRequest) {
     let data: FormData = await req.formData();
     
     let slug = data.get("slug")?.toString();
-    if(!slug || slug == undefined) {
+    if(!slug || slug == undefined || slug.length < 1 || slug.length > 128) {
         return NextResponse.json({
-            message: "You must supply a slug."
+            message: "You must supply a slug between 0 and 128 characters."
         }, { status: 400 });
     }
 
@@ -160,8 +152,8 @@ export async function DELETE(req: NextRequest) {
 
     if(result == null) {
         return NextResponse.json({
-            message: "No post exists with that slug."
-        }, { status: 400 });
+            message: "An internal error occured when deleting the post."
+        }, { status: 500 });
     }
 
     return NextResponse.json({ 
