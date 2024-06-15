@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     html      = converter.makeHtml(text);
 
     return (
-        <div className="flex flex-col items-center p-4 w-3/4 self-center">
+        <div className="flex-1 flex flex-col items-center border-2 p-4 w-3/4 self-center bg-white">
             <div className="flex w-full flex-col gap-10">
                 <div className="text-5xl">{post.title}</div>
                 <div className="flex flex-col">
