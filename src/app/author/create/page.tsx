@@ -1,10 +1,10 @@
-import AdminActions from "@/app/components/auth/AdminActions";
+import ActionSidebar from "@/app/components/auth/AdminSidebar/ActionSidebar";
 import CreatePost from "@/app/components/blog/CreatePost";
 
 export default async function Page() {
     return (
         <div className="flex flex-row p-4">
-            <AdminActions/>
+            <ActionSidebar/>
             <div className="flex-1 p-4">
                 <CreatePost/>
             </div>
