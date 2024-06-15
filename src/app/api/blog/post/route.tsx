@@ -1,6 +1,21 @@
 import { createPost, slugExists } from "@/lib/blog";
 import { NextRequest, NextResponse } from "next/server";
 
+function isSlugValid(slug: string): boolean {
+    if(!slug) {
+        return false;
+    }
+
+    let regex = new RegExp("^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$");
+    let result = regex.test(slug);
+
+    if(!result) {
+        return false;
+    }
+
+    return true;
+}
+
 export async function POST(req:NextRequest) {
     let data: FormData = await req.formData();
 
@@ -15,6 +30,12 @@ export async function POST(req:NextRequest) {
     if(!slug || slug == undefined) {
         return NextResponse.json({
             message: "You must supply a slug."
+        }, { status: 400 });
+    }
+
+    if(!isSlugValid(slug)) {
+        return NextResponse.json({
+            message: "Slugs should only contain alphanumeric characters with dashes and no spaces."
         }, { status: 400 });
     }
 
