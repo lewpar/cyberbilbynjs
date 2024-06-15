@@ -3,7 +3,7 @@ import BlogDetails from "../components/auth/BlogDetails";
 
 export default function Page() {
     return (
-        <div className="flex flex-row p-4">
+        <div className="flex-1 flex flex-row p-4">
             <AdminActions/>
             <div className="flex-1 p-4">
                 <BlogDetails/>

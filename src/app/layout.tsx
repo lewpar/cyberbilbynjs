@@ -22,8 +22,8 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
     return (
         <html lang="en">
             <body className={`${inter.className} bg-slate-900`}>
-                <header className="flex flex-col gap-4 bg-slate-900">
-                    <Logo/>
+                <header className="flex flex-row bg-slate-900 gap-0">
+                    <Logo width={40} height={40}/>
                     <NavMenu isLoggedIn={await isSessionValid()}/>
                 </header>
                 <main className="bg-slate-100">
