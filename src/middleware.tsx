@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const routes = [
     "/api/author", 
+    "/author",
     "/author/create"
 ]
 

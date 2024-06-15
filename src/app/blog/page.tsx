@@ -24,6 +24,11 @@ export default async function Page() {
                             href="/author/create"
                             icon="ph ph-note-pencil"
                         />
+                        <RouteButton
+                            text="Manage"
+                            href="/author"
+                            icon="ph ph-gear"
+                        />
                     </div>
                 </div> : ''
             }
