@@ -69,6 +69,12 @@ export default function CreatePost() {
             </div>
 
             <div className="flex flex-col gap-1">
+                <label htmlFor="cover-image" className="font-bold">Cover Image</label>
+                <p>The cover image shown on the post.</p>
+                <input type="file" name="cover-image"></input>
+            </div>
+
+            <div className="flex flex-col gap-1">
                 <div className="flex flex-row gap-2">
                     <input type="checkbox" name="is-featured" className="nice-field"></input>
                     <label htmlFor="is-featured" className="font-bold">Featured</label>

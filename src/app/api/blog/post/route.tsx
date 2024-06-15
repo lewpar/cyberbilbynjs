@@ -1,6 +1,8 @@
 import { createPost, getPostIdBySlug, slugExists } from "@/lib/blog";
 import { getPrisma } from "@/lib/prisma";
+import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 
 function isSlugValid(slug: string): boolean {
     if(!slug) {
@@ -72,6 +74,22 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ 
             message: "An internal error occured."
         }, { status: 500 });
+    }
+
+    let coverImage = data.get("cover-image") as File;
+    if(coverImage) {
+        let buffer = Buffer.from(await coverImage.arrayBuffer());
+        try {
+            // TODO: (SECURITY) Generate a guid as file name and map it in database to protect against path traversal.
+            await writeFile(path.join(process.cwd(), `public/images/post/${slug}.png`), buffer);
+        }
+        catch(error) {
+            console.log(`Failed to upload cover image with error ${error}`);
+
+            return NextResponse.json({ 
+                message: "An internal error occured while uploading cover image."
+            }, { status: 500 });
+        }
     }
 
     return NextResponse.json({ 

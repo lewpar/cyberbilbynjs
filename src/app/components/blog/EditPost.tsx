@@ -1,5 +1,7 @@
 'use client';
 
+import Image from "next/image";
+
 import { BlogPost } from "@/models/BlogTypes";
 import { FormEvent, useState } from "react";
 
@@ -115,7 +117,16 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                         blogPosts.map((post, id) => 
                             <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} 
                                     className={`p-3 border-2 ${post.slug == currentPost.slug ? "text-white bg-slate-800 border-slate-900" : "bg-white"}`}>
-                                <div className="flex flex-col">
+                                <div className="flex flex-row gap-2">
+                                    <div className="flex items-center justify-center">
+                                        <Image 
+                                            src={`/images/post/${post.slug}.png`}
+                                            width={128} height={64}
+                                            className="rounded"
+                                            alt="Cover Image"
+                                        />
+                                    </div>
+                                    <div className="flex-1 flex flex-col">
                                     {
                                         post.featured ? 
                                         <div className="flex flex-row gap-1 items-center font-bold">
@@ -123,11 +134,12 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                                             <div>Featured</div>
                                         </div> : ""
                                     }
-                                    <div className="text-start">
-                                        <div className="text-lg font-bold">{post.title}</div>
-                                        <div className="text-sm">Posted by {post.author} - {post.date.toLocaleDateString()}</div>
+                                        <div className="text-start">
+                                            <div className="text-lg font-bold">{post.title}</div>
+                                            <div className="text-sm">Posted by {post.author} - {post.date.toLocaleDateString()}</div>
+                                        </div>
+                                        <div className="text-sm italic text-start">{post.shortContent}</div>
                                     </div>
-                                    <div className="text-sm italic text-start">{post.shortContent}</div>
                                 </div>
                             </button>
                         )
