@@ -3,15 +3,11 @@
 import { loginWithGithub, logout } from "@/lib/auth";
 import Image from 'next/image';
 
-export function GitHubLoginButton({ mode }: { mode: string }) {
-    let githubIcon = "/images/github-mark.png";
-
-    if(mode === "dark") {
-        githubIcon = "/images/github-mark-white.png";
-    }
-
+export function GitHubLoginButton({ redirect }: { redirect?: string }) {
+    let githubIcon = "/images/github-mark-white.png";
+    console.log(`Button Redirect: ${redirect}`);
     let onClick = async () => {
-        await loginWithGithub();
+        await loginWithGithub(redirect ?? "/");
     };
 
     return (
@@ -23,6 +19,15 @@ export function GitHubLoginButton({ mode }: { mode: string }) {
             />
             <div>Login with GitHub</div>
         </button>
+    );
+}
+
+export function LoginButton() {
+    return (
+        <a href="/login" className="flex flex-row gap-2 p-2 rounded-md text-white hover:text-blue-500 transition items-center">
+            <i className="ph ph-sign-out"></i>
+            <div>Login</div>
+        </a>
     );
 }
 

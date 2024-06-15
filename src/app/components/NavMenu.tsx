@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from "next/navigation";
-import { GitHubLoginButton, LogoutButton } from "./auth/Buttons";
+import { LoginButton, LogoutButton } from "./auth/Buttons";
 
 function NavButton({ text, href, icon }: { text: string, href: string, icon: string }) {
     const path = usePathname();
@@ -45,7 +45,7 @@ export default function NavMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 {
                     isLoggedIn ? 
                     <LogoutButton/> :
-                    <GitHubLoginButton mode="dark"/>
+                    <LoginButton/>
                 }
             </div>
         </ul>
