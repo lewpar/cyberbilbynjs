@@ -70,7 +70,8 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                 <div className="flex flex-col gap-2 overflow-y-auto max-h-60">
                     {
                         posts.map((post, id) => 
-                            <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} className="p-3 border-2 bg-white">
+                            <button key={id} type="button" onClick={(e) => { onSelectionChanged(post.slug) }} 
+                                    className={`p-3 border-2 ${post.slug == currentPost.slug ? "text-white bg-slate-800 border-slate-900" : "bg-white"}`}>
                                 <div className="flex flex-col">
                                     {
                                         post.featured ? 
@@ -83,7 +84,7 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                                         <div className="text-lg font-bold">{post.title}</div>
                                         <div className="text-sm">Posted by {post.author} - {post.date.toLocaleDateString()}</div>
                                     </div>
-                                    <div className="text-sm italic text-gray-600 text-start">{post.shortContent}</div>
+                                    <div className="text-sm italic text-start">{post.shortContent}</div>
                                 </div>
                             </button>
                         )
