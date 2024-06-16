@@ -55,6 +55,14 @@ export async function POST(req: NextRequest) {
         isFeatured = true;
     }
 
+    let megabyte = (1024 * 1024);
+    let coverImage = data.get("cover-image") as File;
+    if(!coverImage || coverImage.size < 1 || coverImage.size > (megabyte * 1)) {
+        return NextResponse.json({
+            message: "You must supply a cover image lower than 1MB."
+        }, { status: 400 });
+    }
+
     let guid = crypto.randomUUID();
 
     let result = await createPost({
@@ -73,7 +81,6 @@ export async function POST(req: NextRequest) {
     }
 
     // Only create the image on disk if the post was created.
-    let coverImage = data.get("cover-image") as File;
     if(coverImage) {
         let buffer = Buffer.from(await coverImage.arrayBuffer());
         try {
