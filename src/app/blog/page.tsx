@@ -2,6 +2,7 @@ import { getBlogShortPosts, getFeaturedBlogShortPosts, isAuthorizedAuthor } from
 import { BlogShortPost } from "@/models/BlogTypes"
 import { RouteButton } from "../components/Buttons";
 import ShortPost from "../components/blog/ShortPost";
+import VerticalShortPost from "../components/blog/VerticalShortPost";
 
 export default async function Page() {
     let isAuthorized = await isAuthorizedAuthor();
@@ -34,12 +35,12 @@ export default async function Page() {
             }
             <div className="flex-1 flex flex-col gap-1">
                 <div className="text-xl font-bold">Featured</div>
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-col tablet:flex-row gap-4">
                     {
                         featuredPosts.length > 0 ?
                         featuredPosts.map((post, id) => 
-                            <div className="flex-1" key={id}>
-                                <ShortPost
+                            <div className="flex-1 flex" key={id}>
+                                <VerticalShortPost
                                     post={post}
                                 />
                             </div>
