@@ -63,6 +63,25 @@ export async function POST(req: NextRequest) {
         }, { status: 400 });
     }
 
+    let hasValidExtension = false;
+    let fileExtension: string = "";
+    let acceptedExtensions = [".jpg", ".jpeg", ".png"];
+    acceptedExtensions.forEach(ext => {
+        let fileName = coverImage.name.toLowerCase();
+
+        if(fileName.endsWith(ext)) {
+            hasValidExtension = true;
+            fileExtension = fileName.split('.').pop()!;
+            return;
+        }
+    });
+    
+    if(!hasValidExtension) {
+        return NextResponse.json({
+            message: `You must supply an image with a valid extension: ${acceptedExtensions.join(", ")}`
+        }, { status: 400 });
+    }
+
     let guid = crypto.randomUUID();
 
     let result = await createPost({
@@ -71,7 +90,7 @@ export async function POST(req: NextRequest) {
         content: content,
         shortContent: shortContent,
         featured: isFeatured,
-        coverImage: `${guid}.png`
+        coverImage: `${guid}.${fileExtension}`
     }); 
 
     if(!result) {
@@ -85,7 +104,7 @@ export async function POST(req: NextRequest) {
         let buffer = Buffer.from(await coverImage.arrayBuffer());
         try {
             // TODO: (SECURITY) Generate a guid as file name and map it in database to protect against path traversal.
-            let filePath = path.join(process.cwd(), `public/images/post/${guid}.png`)
+            let filePath = path.join(process.cwd(), `public/images/post/${guid}.${fileExtension}`)
             console.log(filePath);
             await writeFile(filePath, buffer);
         }
