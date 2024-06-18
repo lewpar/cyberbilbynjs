@@ -28,7 +28,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 </div>
                 <div className="col-start-1 row-start-1">
                     <div className="flex flex-col gap-4 p-4 text-white">
-                        <div className="text-5xl">{post.title}</div>
+                        <div className="text-5xl">
+                            {post.title}
+                        </div>
                         <div>
                             <div><b>Author:</b> {post.author}</div>
                             <div><b>Date:</b> {post.date?.toLocaleDateString()}</div>
