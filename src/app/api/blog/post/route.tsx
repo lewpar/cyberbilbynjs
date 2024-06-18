@@ -63,20 +63,11 @@ export async function POST(req: NextRequest) {
         }, { status: 400 });
     }
 
-    let hasValidExtension = false;
-    let fileExtension: string = "";
-    let acceptedExtensions = [".jpg", ".jpeg", ".png"];
-    acceptedExtensions.forEach(ext => {
-        let fileName = coverImage.name.toLowerCase();
-
-        if(fileName.endsWith(ext)) {
-            hasValidExtension = true;
-            fileExtension = fileName.split('.').pop()!;
-            return;
-        }
-    });
-    
-    if(!hasValidExtension) {
+    let acceptedExtensions = ["jpg", "jpeg", "png"];
+    let fileName = coverImage.name.toLowerCase();
+    let fileExtension = fileName.split('.').pop()!;
+    if(!acceptedExtensions.includes(fileExtension))
+    {
         return NextResponse.json({
             message: `You must supply an image with a valid extension: ${acceptedExtensions.join(", ")}`
         }, { status: 400 });
