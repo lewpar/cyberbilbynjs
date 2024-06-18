@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
             return new NextResponse(null, {
                 status: 307,
                 headers: {
-                    location: `${process.env.SITE_URL}/login?redirectTo=${route}`
+                    location: `${process.env.WEBSITE_URL}/login?redirectTo=${route}`
                 }
             });
         }

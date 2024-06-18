@@ -19,7 +19,7 @@ export class Authorization {
                 return false;
             }
 
-            let result = await fetch(`${process.env.WEBSITE_URL}/api/authorize`, {
+            let result = await fetch(`${process.env.LOOPBACK_URL}/api/authorize`, {
                 method: 'GET',
                 headers: {
                     Cookie: `${session.name}=${session.value}`
