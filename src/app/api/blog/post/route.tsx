@@ -1,6 +1,6 @@
 import { createPost, deletePostById, getPostBySlug, postExistsWithSlug } from "@/lib/blog";
 import { getPrisma } from "@/lib/prisma";
-import { writeFile } from "fs/promises";
+import { unlink, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
     if(coverImage) {
         let buffer = Buffer.from(await coverImage.arrayBuffer());
         try {
-            let filePath = path.join(process.cwd(), `public/images/post/${guid}.${fileExtension}`)
+            let filePath = path.join(process.cwd(), `public/images/post/${guid}.${fileExtension}`);
             await writeFile(filePath, buffer);
         }
         catch(error) {
@@ -175,6 +175,14 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({
             message: "An internal error occured when deleting the post."
         }, { status: 500 });
+    }
+
+    try {
+        let filePath = path.join(process.cwd(), `public/images/post/${post.coverImage}`);
+        await unlink(filePath);
+    }
+    catch(error) {
+        console.log(`An error occured while trying to delete cover image: ${error}`);
     }
 
     return NextResponse.json({ 
