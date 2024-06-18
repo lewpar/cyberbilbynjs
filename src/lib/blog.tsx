@@ -19,6 +19,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     }
 
     return {
+        id: post.id,
         author: post.author.name, 
         slug: post.slug, 
         title: post.title, 
@@ -44,6 +45,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     
     return posts.map(p => {
         return {
+            id: p.id,
             author: p.author.name, 
             slug: p.slug, 
             title: p.title, 
@@ -70,6 +72,7 @@ export async function getBlogShortPosts(): Promise<BlogShortPost[]> {
     
     return posts.map(p => {
         return {
+            id: p.id,
             author: p.author.name, 
             slug: p.slug, 
             title: p.title, 
@@ -97,6 +100,7 @@ export async function getFeaturedBlogShortPosts(): Promise<BlogShortPost[]> {
     
     return posts.map(p => {
         return {
+            id: p.id,
             author: p.author.name, 
             slug: p.slug, 
             title: p.title, 
@@ -123,20 +127,47 @@ export async function postExistsWithSlug(slug: string): Promise<boolean> {
     return true;
 }
 
-export async function getPostIdBySlug(slug: string): Promise<number | null> {
+export async function getPostBySlug(slug: string): Promise<BlogShortPost | null> {
     let prisma = getPrisma();
 
-    let result = await prisma.post.findFirst({
+    let post = await prisma.post.findFirst({
+        include: {
+            author: true
+        },
         where: {
             slug: slug
         }
     });
 
-    if(!result) {
+    if(!post) {
         return null;
     }
 
-    return result.id;
+    return {
+        id: post.id,
+        author: post.author.name, 
+        slug: post.slug, 
+        title: post.title, 
+        content: post.shortContent, 
+        date: post.date,
+        coverImage: post.coverImage
+    } as BlogShortPost;
+}
+
+export async function deletePostById(id: number): Promise<boolean> {
+    let prisma = getPrisma();
+
+    let result = await prisma.post.delete({
+        where: {
+            id: id
+        }
+    });
+
+    if(result == null) {
+        return false;
+    }
+
+    return true;
 }
 
 async function getAuthorIdByEmail(email: string): Promise<number | null> {

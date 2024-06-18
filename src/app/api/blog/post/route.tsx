@@ -1,4 +1,4 @@
-import { createPost, getPostIdBySlug, postExistsWithSlug } from "@/lib/blog";
+import { createPost, deletePostById, getPostBySlug, postExistsWithSlug } from "@/lib/blog";
 import { getPrisma } from "@/lib/prisma";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
@@ -121,8 +121,8 @@ export async function PUT(req: NextRequest) {
         }, { status: 400 });
     }
 
-    let id = await getPostIdBySlug(slug);
-    if(id == null) {
+    let post = await getPostBySlug(slug);
+    if(post == null) {
         return NextResponse.json({
             message: "No post exists with that slug."
         }, { status: 400 });
@@ -140,7 +140,7 @@ export async function PUT(req: NextRequest) {
 
         await prisma.post.update({
             where: {
-                id: id
+                id: post.id
             },
             data: {
                 content: content
@@ -163,22 +163,15 @@ export async function DELETE(req: NextRequest) {
         }, { status: 400 });
     }
 
-    let id = await getPostIdBySlug(slug);
-    if(id == null) {
+    let post = await getPostBySlug(slug);
+    if(post == null) {
         return NextResponse.json({
             message: "No post exists with that slug."
         }, { status: 400 });
     }
 
-    let prisma = getPrisma();
-
-    let result = await prisma.post.delete({
-        where: {
-            id: id
-        }
-    });
-
-    if(result == null) {
+    let result = await deletePostById(post.id);
+    if(!result) {
         return NextResponse.json({
             message: "An internal error occured when deleting the post."
         }, { status: 500 });

@@ -1,4 +1,5 @@
 export type BlogPost = {
+    id: number;
     author: string;
     slug: string;
     title: string;
@@ -10,6 +11,7 @@ export type BlogPost = {
 }
 
 export type BlogShortPost = {
+    id: number;
     author: string;
     slug: string;
     title: string;
