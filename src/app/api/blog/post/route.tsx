@@ -103,9 +103,7 @@ export async function POST(req: NextRequest) {
     if(coverImage) {
         let buffer = Buffer.from(await coverImage.arrayBuffer());
         try {
-            // TODO: (SECURITY) Generate a guid as file name and map it in database to protect against path traversal.
             let filePath = path.join(process.cwd(), `public/images/post/${guid}.${fileExtension}`)
-            console.log(filePath);
             await writeFile(filePath, buffer);
         }
         catch(error) {

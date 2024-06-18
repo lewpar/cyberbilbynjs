@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export function GitHubLoginButton({ redirect }: { redirect?: string }) {
     let githubIcon = "/images/github-mark-white.png";
-    console.log(`Button Redirect: ${redirect}`);
+
     let onClick = async () => {
         await loginWithGithub(redirect ?? "/");
     };
