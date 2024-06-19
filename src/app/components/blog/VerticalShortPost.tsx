@@ -4,16 +4,16 @@ import { BlogShortPost } from "@/models/BlogTypes";
 
 export default function VerticalShortPost({ post }: { post: BlogShortPost }) {
     return (
-        <div className="flex-1 flex flex-col">
-            <div className="flex bg-white rounded-l items-center justify-center p-6">
+        <div className="flex-1 flex flex-col bg-white border rounded-md">
+            <div className="flex bg-white rounded-l items-center">
                 <Image 
                     src={`/images/post/${post.coverImage}`}
                     width={256} height={128}
-                    className="rounded"
+                    className="rounded-t object-cover w-full max-h-48"
                     alt="Cover Image"
                 />
             </div>
-            <div className="flex-1 flex flex-col p-4 bg-white gap-2">
+            <div className="flex-1 flex flex-col p-4 gap-2">
                 <div className="text-xl font-bold">
                     {post.title}
                 </div>
