@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                         alt="Cover Image"
                     />
                 </div>
-                <div className="col-start-1 row-start-1">
+                <div className="flex items-center col-start-1 row-start-1">
                     <div className="flex flex-col gap-4 p-4 text-white">
                         <div className="text-5xl">
                             {post.title}
@@ -38,8 +38,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     </div>
                 </div>
             </div>
-            <div className="flex w-full flex-col gap-10 p-4">
-                <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+            <div className="flex w-full flex-col gap-10 p-8 tablet:px-20 tablet:py-20">
+                <div className="prose max-w-full" dangerouslySetInnerHTML={{ __html: html }} />
             </div>
         </div>
     );
