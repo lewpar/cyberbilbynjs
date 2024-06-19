@@ -1,3 +1,4 @@
+import ShortPost from "@/app/components/blog/ShortPost";
 import { getBlogShortPosts } from "@/lib/blog";
 import { BlogShortPost } from "@/models/BlogTypes";
 import { notFound } from "next/navigation";
@@ -21,22 +22,14 @@ export default async function Page({ params }: { params: { page: string } }) {
 
     return (
         <div className="flex flex-col gap-4 p-4 w-3/4 self-center">
+            <div className="text-xl font-bold">Posts</div>
             {
                 paginated.length > 0 ?
                 paginated.map((post, id) => 
-                    <div key={id} className="flex flex-col border-2 p-4 bg-white gap-2">
-                        <div className="text-xl font-bold">
-                            {post.title}
-                        </div>
-                        <div className="flex flex-col italic text-sm">
-                            <div>{post.author}</div>
-                            <div>{post.date.toLocaleDateString()}</div>
-                        </div>
-                        <div>
-                            {post.content}
-                        </div>
-                        <a href={`/blog/post/${post.slug}`} className="nice-link">Read More</a>
-                    </div>
+                    <ShortPost
+                        key={id}
+                        post={post}
+                    />
                 ) :
                 <div>There are no posts.</div>
             }
