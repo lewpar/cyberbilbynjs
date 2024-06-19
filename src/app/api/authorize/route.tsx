@@ -19,6 +19,11 @@ export async function GET(req: NextRequest) {
     });
 
     if(!result) {
+
+        console.log(session);
+        console.log(session.user);
+        console.log(session.user?.email);
+        
         return NextResponse.json({
             message: "You are not authorized to access this resource."
         }, { status: 401 });
