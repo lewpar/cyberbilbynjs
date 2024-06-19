@@ -105,13 +105,14 @@ export async function PUT(req: NextRequest) {
     let data: FormData = await req.formData();
     
     let slug = data.get("slug")?.toString();
-    if(!slug || slug == undefined || slug.length < 1 || slug.length > 128) {
+    let validSlug = Validator.validate(InputValidationType.BlogPostSlug, slug);
+    if(!validSlug.result) {
         return NextResponse.json({
-            message: "You must supply a slug between 0 and 128 characters."
+            message: validSlug.message
         }, { status: 400 });
     }
 
-    let post = await getPostBySlug(slug);
+    let post = await getPostBySlug(slug!);
     if(post == null) {
         return NextResponse.json({
             message: "No post exists with that slug."
@@ -121,22 +122,21 @@ export async function PUT(req: NextRequest) {
     let prisma = getPrisma();
 
     let content = data.get("content")?.toString();
-    if(content) {
-        if(content.length < 1 || content.length > 65536) {
-            return NextResponse.json({
-                message: "You must supply content between 0 and 65,536 characters."
-            }, { status: 400 });
-        }
-
-        await prisma.post.update({
-            where: {
-                id: post.id
-            },
-            data: {
-                content: content
-            }
-        });
+    let validContent = Validator.validate(InputValidationType.BlogPostContent, content);
+    if(!validContent.result) {
+        return NextResponse.json({
+            message: validContent.message
+        }, { status:400 });
     }
+
+    await prisma.post.update({
+        where: {
+            id: post.id
+        },
+        data: {
+            content: content
+        }
+    });
 
     return NextResponse.json({ 
         message: "Post updated"
