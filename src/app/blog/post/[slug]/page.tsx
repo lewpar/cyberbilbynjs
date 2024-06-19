@@ -26,8 +26,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
                         alt="Cover Image"
                     />
                 </div>
-                <div className="relative flex items-center col-start-1 row-start-1">
-                    <div className="flex flex-col gap-4 p-4 text-white">
+                <div className="relative flex items-center justify-center p-8 col-start-1 row-start-1">
+                    <div className="flex flex-col gap-4 text-white">
                         <div className="text-5xl">
                             {post.title}
                         </div>
