@@ -17,16 +17,16 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
     return (
         <div className="flex-1 flex flex-col items-center tablet:border-x-2 w-full tablet:w-3/4 self-center bg-white">
-            <div className="self-stretch grid">
-                <div className="flex col-start-1 row-start-1 max-h-48">
+            <div className="self-stretch grid items-center">
+                <div className="flex col-start-1 row-start-1 max-h-60">
                     <Image 
                         src={`/images/post/${post.coverImage}`}
                         width={256} height={128}
-                        className="flex-1 object-cover"
+                        className="flex-1 object-cover brightness-50 bg-black"
                         alt="Cover Image"
                     />
                 </div>
-                <div className="flex items-center col-start-1 row-start-1">
+                <div className="relative flex items-center col-start-1 row-start-1">
                     <div className="flex flex-col gap-4 p-4 text-white">
                         <div className="text-5xl">
                             {post.title}
