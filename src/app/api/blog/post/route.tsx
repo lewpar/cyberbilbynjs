@@ -1,3 +1,4 @@
+import { InputValidationType, Validator } from "@/lib/Validator";
 import { createPost, deletePostById, getPostBySlug, postExistsWithSlug } from "@/lib/blog";
 import { getPrisma } from "@/lib/prisma";
 import { unlink, writeFile } from "fs/promises";
@@ -8,78 +9,67 @@ export async function POST(req: NextRequest) {
     let data: FormData = await req.formData();
 
     let title = data.get("title")?.toString();
-    if(!title || title == undefined || title.length < 1 || title.length > 128) {
+    let validTitle = Validator.validate(InputValidationType.BlogPostTitle, title);
+    if(!validTitle.result) {
         return NextResponse.json({
-            message: "You must supply a title between 0 and 128 characters."
+            message: validTitle.message
         }, { status: 400 });
     }
 
     let slug = data.get("slug")?.toString();
-    if(!slug || slug == undefined || slug.length < 1 || slug.length > 128) {
+    let validSlug = Validator.validate(InputValidationType.BlogPostSlug, slug);
+    if(!validSlug.result) {
         return NextResponse.json({
-            message: "You must supply a slug between 0 and 128 characters."
+            message: validSlug.message
         }, { status: 400 });
     }
 
-    let slugPattern = new RegExp("^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$");
-    if(!slugPattern.test(slug)) {
-        return NextResponse.json({
-            message: "Slugs should only contain alphanumeric characters with dashes and no spaces."
-        }, { status: 400 });
-    }
-
-    if(await postExistsWithSlug(slug)) {
+    if(await postExistsWithSlug(slug!)) {
         return NextResponse.json({
             message: "A post with that slug already exists."
         }, { status: 400 });
     }
 
     let shortContent = data.get("short-content")?.toString();
-    if(!shortContent || shortContent == undefined || shortContent.length < 1 || shortContent.length > 256) {
+    let validShortContent = Validator.validate(InputValidationType.BlogPostShortContent, shortContent);
+    if(!validShortContent.result) {
         return NextResponse.json({
-            message: "You must supply short content between 0 and 256 characters."
+            message: validShortContent.message
         }, { status: 400 });
     }
 
     let content = data.get("content")?.toString();
-    if(!content || content == undefined || content.length < 1 || content.length > 65536) {
+    let validContent = Validator.validate(InputValidationType.BlogPostContent, content);
+    if(!validContent.result) {
         return NextResponse.json({
-            message: "You must supply content between 0 and 65,536 characters."
-        }, { status: 400 });
+            message: validContent.message
+        }, { status:400 });
     }
 
     let isFeatured = false;
     let featured = data.get("is-featured")?.toString();
 
-    if(featured && featured != undefined && featured === 'on') {
+    if(featured && featured === 'on') {
         isFeatured = true;
     }
 
-    let megabyte = (1024 * 1024);
     let coverImage = data.get("cover-image") as File;
-    if(!coverImage || coverImage.size < 1 || coverImage.size > (megabyte * 1)) {
+    let validCoverImage = Validator.validate(InputValidationType.BlogPostCoverImage, coverImage);
+    if(!validCoverImage.result) {
         return NextResponse.json({
-            message: "You must supply a cover image lower than 1MB."
-        }, { status: 400 });
-    }
-
-    let acceptedExtensions = ["jpg", "jpeg", "png"];
-    let fileName = coverImage.name.toLowerCase();
-    let fileExtension = fileName.split('.').pop()!;
-    if(!acceptedExtensions.includes(fileExtension))
-    {
-        return NextResponse.json({
-            message: `You must supply an image with a valid extension: ${acceptedExtensions.join(", ")}`
+            message: validCoverImage.message
         }, { status: 400 });
     }
 
     let guid = crypto.randomUUID();
+    let fileName = coverImage.name.toLowerCase();
+    let fileExtension = fileName.split('.').pop()!;
 
     let result = await createPost({
-        title: title,
-        slug: slug,
-        content: content,
-        shortContent: shortContent,
+        title: title!,
+        slug: slug!,
+        content: content!,
+        shortContent: shortContent!,
         featured: isFeatured,
         coverImage: `${guid}.${fileExtension}`
     }); 
