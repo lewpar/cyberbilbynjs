@@ -121,6 +121,22 @@ export async function PUT(req: NextRequest) {
 
     let prisma = getPrisma();
 
+    let title = data.get("title")?.toString();
+    let validTitle = Validator.validate(InputValidationType.BlogPostTitle, title);
+    if(!validTitle.result) {
+        return NextResponse.json({
+            message: validTitle.message
+        }, { status:400 });
+    }
+
+    let shortContent = data.get("short-content")?.toString();
+    let validShortContent = Validator.validate(InputValidationType.BlogPostContent, shortContent);
+    if(!validShortContent.result) {
+        return NextResponse.json({
+            message: validShortContent.message
+        }, { status:400 });
+    }
+
     let content = data.get("content")?.toString();
     let validContent = Validator.validate(InputValidationType.BlogPostContent, content);
     if(!validContent.result) {
@@ -134,6 +150,8 @@ export async function PUT(req: NextRequest) {
             id: post.id
         },
         data: {
+            title: title,
+            shortContent: shortContent,
             content: content
         }
     });

@@ -24,10 +24,26 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
         });
     };
 
+    let onShortContentChanged = (event: any) => {
+        let newPost = {
+            ...currentPost,
+            shortContent: event.target.value
+        };
+        setCurrentPost(newPost);
+    };
+
     let onContentChanged = (event: any) => {
         let newPost = {
             ...currentPost,
             content: event.target.value
+        };
+        setCurrentPost(newPost);
+    };
+
+    let onTitleChanged = (event: any) => {
+        let newPost = {
+            ...currentPost,
+            title: event.target.value
         };
         setCurrentPost(newPost);
     };
@@ -152,9 +168,21 @@ export default function EditPost({ posts }: { posts: BlogPost[] }) {
                     }
                 </div>
             </div>
-            <div className="flex flex-col">
-                <label htmlFor="content" className="font-bold">Content</label>
-                <textarea name="content" rows={10} value={ currentPost != null ? currentPost.content : "" } onChange={onContentChanged} className="border-2 p-2"></textarea>
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="title" className="font-bold">Title</label>
+                    <input name="title" type="text" value={ currentPost != null ? currentPost.title : "" } onChange={onTitleChanged} className="border-2 p-2"/>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="short-content" className="font-bold">Short Content</label>
+                    <input name="short-content" type="text" value={ currentPost != null ? currentPost.shortContent : "" } onChange={onShortContentChanged} className="border-2 p-2"/>
+                </div>
+                
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="content" className="font-bold">Content</label>
+                    <textarea name="content" rows={10} value={ currentPost != null ? currentPost.content : "" } onChange={onContentChanged} className="border-2 p-2"></textarea>
+                </div>
             </div>
             <div className="flex flex-row gap-3">
                 <button type="submit" onClick={() => { clicked = "update" }} className="flex-1 border-2 bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 text-white p-4 rounded-md transition" disabled={isPosting}>Update</button>
