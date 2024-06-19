@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
 
     if(!session) {
         return NextResponse.json({
-            message: "You are not authorized to access this resource."
+            message: "You are not authenticated to access this resource."
         }, { status: 401 });
     }
 
