@@ -10,18 +10,19 @@ using Microsoft.EntityFrameworkCore;
 namespace CyberBilbyApi.Controllers;
 
 [ApiController]
-[Route("/api/user")]
+[Route("api/[controller]")]
 [EnableCors("MyCorsPolicy")]
-public class UserControllers : Controller
+public class AccountController : Controller
 {
     private readonly CyberBilbyDbContext dbContext;
 
-    public UserControllers(CyberBilbyDbContext dbContext)
+    public AccountController(CyberBilbyDbContext dbContext)
     {
         this.dbContext = dbContext;
     }
 
-    public async Task<IActionResult> PostAsync([FromBody]RegisterUserDto user)
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateAccountAsync([FromBody]RegisterUserDto user)
     {
         if(user is null)
         {
@@ -70,9 +71,9 @@ public class UserControllers : Controller
 
         if(result < 1)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new BasicApiResponse(false, "User not created, an internal server error occured."));
+            return StatusCode(StatusCodes.Status500InternalServerError, new BasicApiResponse(false, "Account not created, an internal server error occured."));
         }
 
-        return Ok(new BasicApiResponse(true, "User created."));
+        return Ok(new BasicApiResponse(true, "Account created."));
     }
 }

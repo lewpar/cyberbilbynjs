@@ -2,7 +2,7 @@ import { BasicApiResponse } from "./types/api-types";
 
 export async function createUser(displayName: string, username: string, password: string, confirmPassword: string): Promise<BasicApiResponse> {
     try {
-        let response = await fetch(`${process.env.REACT_APP_API_URL}/api/user`, { 
+        let response = await fetch(`${process.env.REACT_APP_API_URL}/api/account/create`, { 
             mode:"cors",
             method: "POST",
             headers: {
@@ -18,7 +18,7 @@ export async function createUser(displayName: string, username: string, password
         });
 
         if(!response.ok) {
-            console.log(`Failed to fetch blog posts with API error: ${response.status} : ${response.statusText}`)
+            console.log(`Failed to fetch account create API with error: ${response.status} : ${response.statusText}`)
             return await response.json() as BasicApiResponse;
         }
 
