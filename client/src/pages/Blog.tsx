@@ -15,14 +15,18 @@ export default function Blog() {
     return (
         <div className="flex flex-col gap-1">
             <div className="font-bold">Posts</div>
-            <div className="flex flex-col gap-4">
+            {
+                posts === undefined ?
+                <div>Loading posts..</div> :
+                <div className="flex flex-col gap-4">
                 { 
-                    posts && posts.length > 0 ?
+                    posts.length > 0 ?
                     posts.map(post => 
                         <BlogPostCard title={post.title} content={post.shortContent} />
                     ) : "No posts were found."
                 }
             </div>
+            }
         </div>
     );
 }
