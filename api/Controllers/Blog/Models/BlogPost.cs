@@ -1,4 +1,4 @@
-namespace CyberBilby.Controllers.Models
+namespace CyberBilby.Controllers.Blog.Models
 {
     public record BlogPost(string title, string shortContent);
 }

@@ -1,5 +1,28 @@
+import { useEffect, useState } from "react";
+import { getPosts } from "../lib/blog";
+import { BlogPost } from "../lib/types/blog-types";
+import BlogPostCard from "../components/BlogPostCard";
+
 export default function Blog() {
+    let [posts, setPosts] = useState<BlogPost[]>();
+
+    useEffect(() => {
+        getPosts().then(posts => {
+            setPosts(posts);
+        });
+    }, []);
+
     return (
-        <div>Hello from the Blog!</div>
+        <div className="flex flex-col gap-1">
+            <div className="font-bold">Posts</div>
+            <div className="flex flex-col gap-4">
+                { 
+                    posts && posts.length > 0 ?
+                    posts.map(post => 
+                        <BlogPostCard title={post.title} content={post.shortContent} />
+                    ) : "No posts were found."
+                }
+            </div>
+        </div>
     );
 }

@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 
-using CyberBilby.Controllers.Models;
+using CyberBilby.Controllers.Blog.Models;
+using Microsoft.AspNetCore.Cors;
 
-namespace CyberBilby.Controllers.Api
+namespace CyberBilby.Controllers.Blog
 {
     [ApiController]
-    [Route("api/posts")]
+    [Route("api/blog/posts")]
+    [EnableCors("MyCorsPolicy")]
     public class PostsController : Controller
     {
         public IActionResult Get()
