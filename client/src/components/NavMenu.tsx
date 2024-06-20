@@ -16,6 +16,12 @@ export default function NavMenu() {
                         icon="ph ph-house"
                         text="Blog"
                     />
+
+                    <PhosLink
+                        href="/register"
+                        icon="ph ph-user"
+                        text="Register"
+                    />
                 </li>
             </ul>
         </div>

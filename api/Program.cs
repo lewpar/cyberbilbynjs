@@ -16,7 +16,7 @@ public class Program
 
         RunDatabaseMigrations(app);
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.MapControllers();
         app.UseCors();
 
