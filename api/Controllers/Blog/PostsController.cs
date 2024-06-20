@@ -21,7 +21,7 @@ namespace CyberBilby.Controllers.Blog
 
         public async Task<IActionResult> GetAsync()
         {
-            var posts = await dbContext.Posts.ToListAsync();
+            var posts = await dbContext.Posts.Include(p => p.Author).ToListAsync();
             var mapped = new List<BlogPost>();
 
             foreach(var post in posts)
