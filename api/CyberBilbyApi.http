@@ -1,0 +1,6 @@
+@CyberBilbyApi_HostAddress = http://localhost:5234
+
+GET {{CyberBilbyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
