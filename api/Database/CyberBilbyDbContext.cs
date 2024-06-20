@@ -2,13 +2,12 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace CyberBilbyApi.Database
-{
-    public class CyberBilbyDbContext : DbContext
-    {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Post> Posts { get; set; }
+namespace CyberBilbyApi.Database;
 
-        public CyberBilbyDbContext(DbContextOptions<CyberBilbyDbContext> options) : base(options) { }
-    }
+public class CyberBilbyDbContext : DbContext
+{
+    public DbSet<User> Users { get; set; }
+    public DbSet<Post> Posts { get; set; }
+
+    public CyberBilbyDbContext(DbContextOptions<CyberBilbyDbContext> options) : base(options) { }
 }

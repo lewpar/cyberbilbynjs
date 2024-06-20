@@ -1,35 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
-
-using CyberBilby.Controllers.Blog.Models;
-using Microsoft.AspNetCore.Cors;
+using CyberBilbyApi.Controllers.Blog.Models;
 using CyberBilbyApi.Database;
+
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace CyberBilby.Controllers.Blog
+namespace CyberBilby.Controllers.Blog;
+
+[ApiController]
+[Route("api/blog/posts")]
+[EnableCors("MyCorsPolicy")]
+public class PostsController : Controller
 {
-    [ApiController]
-    [Route("api/blog/posts")]
-    [EnableCors("MyCorsPolicy")]
-    public class PostsController : Controller
+    private readonly CyberBilbyDbContext dbContext;
+
+    public PostsController(CyberBilbyDbContext dbContext)
     {
-        private readonly CyberBilbyDbContext dbContext;
+        this.dbContext = dbContext;
+    }
 
-        public PostsController(CyberBilbyDbContext dbContext)
+    public async Task<IActionResult> GetAsync()
+    {
+        var posts = await dbContext.Posts.Include(p => p.Author).ToListAsync();
+        var mapped = new List<BlogPost>();
+
+        foreach(var post in posts)
         {
-            this.dbContext = dbContext;
+            mapped.Add(new BlogPost(post.Title ?? "Untitled", post.ShortContent ?? string.Empty, post.Content ?? string.Empty, post.Author?.DisplayName ?? "Anonymous"));
         }
 
-        public async Task<IActionResult> GetAsync()
-        {
-            var posts = await dbContext.Posts.Include(p => p.Author).ToListAsync();
-            var mapped = new List<BlogPost>();
-
-            foreach(var post in posts)
-            {
-                mapped.Add(new BlogPost(post.Title ?? "Untitled", post.ShortContent ?? string.Empty, post.Content ?? string.Empty, post.Author?.DisplayName ?? "Anonymous"));
-            }
-
-            return Json(mapped);
-        }
+        return Json(mapped);
     }
 }
