@@ -19,7 +19,4 @@ public class User
 
     [Column("password")]
     public string? Password { get; set; }
-
-    [Column("salt")]
-    public string? Salt { get; set; }
 }
