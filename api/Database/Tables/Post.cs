@@ -19,5 +19,8 @@ namespace CyberBilbyApi.Database.Tables
 
         [Column("content")]
         public string? Content { get; set; }
+
+        [Column("author")]
+        public User? Author { get; set; }
     }
 }
