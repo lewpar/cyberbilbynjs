@@ -11,6 +11,9 @@ namespace CyberBilbyApi.Database.Tables
         [Column("id")]
         public int Id { get; set; }
 
+        [Column("display_name")]
+        public string? DisplayName { get; set; }
+
         [Column("username")]
         public string? Username { get; set; }
 
