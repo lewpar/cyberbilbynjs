@@ -21,6 +21,7 @@ public class Program
         RunDatabaseMigrations(app);
 
         // UseCors should run before UseAuthentication/Authorization because it does preflight checks to ensure the transport is safe.
+        // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-8.0#middleware-order
         // This fixes error unrelated to CORS showing up as CORS errors.
         app.UseCors("AllowReactFrontend");
 

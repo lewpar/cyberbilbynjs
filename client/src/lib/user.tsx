@@ -35,7 +35,7 @@ export async function loginUser(username: string, password: string): Promise<Bas
         let response = await fetch(`${process.env.REACT_APP_API_URL}/api/account/login`, { 
             mode:"cors",
             method: "POST",
-            credentials: "include",
+            credentials: "include", // Must be included to save the Http-Only cookie provided by Set-Cookie header
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json" 

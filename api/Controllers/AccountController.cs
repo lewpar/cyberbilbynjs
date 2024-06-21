@@ -124,7 +124,7 @@ public class AccountController : Controller
         return Ok(new BasicApiResponse(true, "Logged in."));
     }
 
-    [Authorize]
+    [Authorize(Roles = "Author")]
     [HttpGet("test")]
     public IActionResult TestProtectedEndpoint()
     {
