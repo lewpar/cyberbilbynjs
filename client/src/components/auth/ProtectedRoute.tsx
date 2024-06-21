@@ -9,7 +9,7 @@ export default function ProtectedRoute({ children }: { children: any }) {
     let isAuthorized = canAccessProtectedRoute(route);
 
     if(!isAuthorized && !user.loggedIn) {
-        return <Navigate to="/login"/>
+        return <Navigate to="/login" state={ route /* Return Route */ }/>
     }
 
     if(!isAuthorized && user.loggedIn) {

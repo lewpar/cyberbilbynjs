@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { loginUser } from "../lib/user";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Layout from "../components/Layout";
 
@@ -11,6 +11,7 @@ export default function Login() {
     let navigate = useNavigate();
 
     let [user,,,login] = useAuth();
+    let returnRoute: string = useLocation().state;
 
     if(user.loggedIn) {
         return <Navigate to="/"/>
@@ -37,7 +38,7 @@ export default function Login() {
 
         login();
 
-        navigate("/");
+        navigate(returnRoute ?? "/");
     };
 
     return (
