@@ -1,8 +1,7 @@
 import { FormEvent, useState } from "react";
 import { loginUser } from "../lib/user";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { getUserAccess } from "../lib/auth";
 import Layout from "../components/Layout";
 
 export default function Login() {
@@ -11,7 +10,11 @@ export default function Login() {
 
     let navigate = useNavigate();
 
-    let [, setUser] = useAuth();
+    let [user,,,login] = useAuth();
+
+    if(user.loggedIn) {
+        return <Navigate to="/"/>
+    }
 
     let onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -32,7 +35,7 @@ export default function Login() {
             return;
         }
 
-        setUser(getUserAccess());
+        login();
 
         navigate("/");
     };

@@ -1,6 +1,8 @@
 import { FormEvent, useState } from "react";
 import { createUser } from "../lib/user";
 import Layout from "../components/Layout";
+import useAuth from "../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 export default function Register() {
     let [error, setError] = useState("");
@@ -8,6 +10,11 @@ export default function Register() {
 
     let [hasSucceeded, setHasSucceeded] = useState(false);
 
+    let [user] = useAuth();
+
+    if(user.loggedIn) {
+        return <Navigate to="/"/>
+    }
 
     let onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
