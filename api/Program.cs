@@ -20,6 +20,8 @@ public class Program
 
         RunDatabaseMigrations(app);
 
+        // UseCors should run before UseAuthentication/Authorization because it does preflight checks to ensure the transport is safe.
+        // This fixes error unrelated to CORS showing up as CORS errors.
         app.UseCors("AllowReactFrontend");
 
         app.UseAuthentication();
@@ -97,11 +99,13 @@ public class Program
                 RoleClaimType = ClaimTypes.Role
             };
 
+            // The JWT is sent as a HTTP-Only cookie and is not accessible by the client,
+            // this means the React frontend cannot send the cookie under the Authorization header.
+            // I must extract the cookie myself from the request and assign the token myself.
             options.Events = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
                 {
-                    // Retrieve the token from the cookie
                     if (context.Request.Cookies.ContainsKey("jwt"))
                     {
                         context.Token = context.Request.Cookies["jwt"];
