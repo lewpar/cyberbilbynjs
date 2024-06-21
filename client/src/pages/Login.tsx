@@ -8,7 +8,6 @@ export default function Login() {
 
     let navigate = useNavigate();
 
-
     let onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
