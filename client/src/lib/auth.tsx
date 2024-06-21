@@ -5,6 +5,7 @@ type ProtectedRoute = {
 
 type UserAccess = {
     role: string;
+    loggedIn: boolean;
 }
 
 const protectedRoutes: ProtectedRoute[] = [
@@ -25,17 +26,39 @@ function canRoleAccessRoute(role: string, route: string): boolean {
 }
 
 export function canAccessProtectedRoute(route: string): boolean {
-    let cookie = getCookie("cbusr");
-    if(!cookie) {
+    let access = getUserAccess();
+    if(!access) {
         return false;
     }
 
-    let access = JSON.parse(atob(decodeURIComponent(cookie))) as UserAccess;
     if(!canRoleAccessRoute(access.role, route)) {
         return false;
     }
 
     return true;
+}
+
+export function isLoggedIn(): boolean {
+    let access = getUserAccess();
+    if(!access) {
+        return false;
+    }
+
+    return true;
+}
+
+function getUserAccess(): UserAccess | null {
+    let cookie = getCookie("cbusr");
+    if(!cookie) {
+        return null;
+    }
+
+    let access = JSON.parse(atob(decodeURIComponent(cookie))) as UserAccess;
+    if(!access) {
+        return null;
+    }
+
+    return access;
 }
 
 // Curtesy of https://stackoverflow.com/questions/51109559/get-cookie-with-react

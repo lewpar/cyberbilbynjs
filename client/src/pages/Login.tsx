@@ -1,11 +1,12 @@
 import { FormEvent, useState } from "react";
 import { loginUser } from "../lib/user";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     let [error, setError] = useState("");
     let [hasError, setHasError] = useState(false);
 
-    let [hasSucceeded, setHasSucceeded] = useState(false);
+    let navigate = useNavigate();
 
 
     let onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -13,7 +14,6 @@ export default function Login() {
 
         setError("");
         setHasError(false);
-        setHasSucceeded(false);
 
         let formData = new FormData(event.currentTarget);
 
@@ -28,7 +28,7 @@ export default function Login() {
             return;
         }
 
-        setHasSucceeded(true);
+        navigate("/");
     };
 
     return (
@@ -46,7 +46,6 @@ export default function Login() {
             <button type="submit" className="border-2 p-2 text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 transition">Login</button>
 
             { hasError ? <p className="text-red-500">{error}</p> : "" }
-            { hasSucceeded ? <p className="text-green-500">Logged in</p> : "" }
         </form>
     );
 }

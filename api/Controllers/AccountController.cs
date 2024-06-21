@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
+
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace CyberBilbyApi.Controllers;
 
@@ -133,7 +132,8 @@ public class AccountController : Controller
 
         var userAccess = new Dictionary<string, string>
         {
-            { "role", user.Role.ToString().ToLower() }
+            { "role", user.Role.ToString().ToLower() },
+            { "loggedIn", "true" }
         };
 
         var ms = new MemoryStream();

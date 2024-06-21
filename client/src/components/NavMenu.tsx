@@ -1,3 +1,4 @@
+import { canAccessProtectedRoute, isLoggedIn } from "../lib/auth";
 import PhosLink from "./PhosLink";
 
 export default function NavMenu() {
@@ -17,23 +18,41 @@ export default function NavMenu() {
                         text="Blog"
                     />
 
-                    <PhosLink
-                        href="/register"
-                        icon="ph ph-user-add"
-                        text="Register"
-                    />
+                    {
+                        !isLoggedIn() ?
+                        <PhosLink
+                            href="/register"
+                            icon="ph ph-user-add"
+                            text="Register"
+                        /> : ""
+                    }
 
-                    <PhosLink
-                        href="/login"
-                        icon="ph ph-user"
-                        text="Login"
-                    />
 
-                    <PhosLink
-                        href="/test"
-                        icon="ph ph-user"
-                        text="Test"
-                    />
+                    {
+                        !isLoggedIn() ?
+                        <PhosLink
+                            href="/login"
+                            icon="ph ph-user"
+                            text="Login"
+                        />
+                        :
+                        <PhosLink
+                            href="/logout"
+                            icon="ph ph-user"
+                            text="Logout"
+                        />
+                    }
+
+
+                    { 
+                        canAccessProtectedRoute("/test") ?  
+                        <PhosLink
+                            href="/test"
+                            icon="ph ph-user"
+                            text="Test"
+                        />
+                        : ""
+                    }
                 </li>
             </ul>
         </div>
