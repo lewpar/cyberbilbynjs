@@ -3,6 +3,7 @@ using CyberBilbyApi.Controllers.Response;
 using CyberBilbyApi.Database;
 using CyberBilbyApi.Database.Tables;
 using CyberBilbyApi.Services;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace CyberBilbyApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[EnableCors("MyCorsPolicy")]
+[EnableCors("AllowReactFrontend")]
 public class AccountController : Controller
 {
     private readonly CyberBilbyDbContext dbContext;
@@ -68,7 +69,8 @@ public class AccountController : Controller
         {
             DisplayName = account.DisplayName,
             Username = account.Username.ToLower(),
-            Password = BCrypt.Net.BCrypt.HashPassword(account.Password)
+            Password = BCrypt.Net.BCrypt.HashPassword(account.Password),
+            Role = UserRole.User
         });
 
         var result = await dbContext.SaveChangesAsync();
@@ -112,7 +114,7 @@ public class AccountController : Controller
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = false, // Change in PROD
+            Secure = false, // Production will use reverse proxy
             SameSite = SameSiteMode.Strict,
             Expires = DateTime.UtcNow.AddMinutes(120)
         };
@@ -120,5 +122,12 @@ public class AccountController : Controller
         Response.Cookies.Append("jwt", token, cookieOptions);
 
         return Ok(new BasicApiResponse(true, "Logged in."));
+    }
+
+    [Authorize]
+    [HttpGet("test")]
+    public IActionResult TestProtectedEndpoint()
+    {
+        return Ok();
     }
 }

@@ -3,6 +3,7 @@ using CyberBilbyApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace CyberBilbyApi;
@@ -19,12 +20,12 @@ public class Program
 
         RunDatabaseMigrations(app);
 
+        app.UseCors("AllowReactFrontend");
+
         app.UseAuthentication();
         app.UseAuthorization();
 
-        //app.UseHttpsRedirection();
         app.MapControllers();
-        app.UseCors();
 
         app.Run();
     }
@@ -33,9 +34,21 @@ public class Program
     {
         services.AddControllers();
 
-        services.AddCors(o => o.AddPolicy("MyCorsPolicy", builder =>
+        var reactEndpoint = builder.Configuration["Endpoints:React"];
+        if(string.IsNullOrEmpty(reactEndpoint))
         {
-            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            throw new NullReferenceException("React Endpoint is null or empty.");
+        }
+
+        var apiEndpoint = builder.Configuration["Endpoints:Api"];
+        if (string.IsNullOrEmpty(apiEndpoint))
+        {
+            throw new NullReferenceException("API Endpoint is null or empty.");
+        }
+
+        services.AddCors(o => o.AddPolicy("AllowReactFrontend", builder =>
+        {
+            builder.WithOrigins(reactEndpoint).AllowCredentials().AllowAnyHeader().AllowAnyMethod();
         }));
 
         services.AddDbContext<CyberBilbyDbContext>(db =>
@@ -55,13 +68,11 @@ public class Program
             db.UseMySql(mySqlConn, mySqlVersion);
         });
 
-        var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-        var jwtAudience = builder.Configuration["Jwt:Audience"];
         var jwtKey = builder.Configuration["Jwt:Key"];
 
-        if(string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience) || string.IsNullOrEmpty(jwtKey))
+        if(string.IsNullOrEmpty(jwtKey))
         {
-            throw new NullReferenceException("One or more Jwt settings are missing or empty.");
+            throw new NullReferenceException("Jwt key is missing or empty.");
         }
 
         services.AddAuthentication(options =>
@@ -78,10 +89,26 @@ public class Program
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
 
-                ValidIssuer = jwtIssuer,
-                ValidAudience = jwtAudience,
+                ValidIssuer = apiEndpoint,
+                ValidAudience = reactEndpoint,
 
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+
+                RoleClaimType = ClaimTypes.Role
+            };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    // Retrieve the token from the cookie
+                    if (context.Request.Cookies.ContainsKey("jwt"))
+                    {
+                        context.Token = context.Request.Cookies["jwt"];
+                    }
+
+                    return Task.CompletedTask;
+                }
             };
         });
 

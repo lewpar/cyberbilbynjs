@@ -10,6 +10,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Body from './components/layout/Body';
 import Register from './pages/Register';
+import Login from './pages/Login';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,6 +24,7 @@ root.render(
                 <Route path="/" element={<Home/>} />
                 <Route path="/blog" element={<Blog/>} />
                 <Route path="/register" element={<Register/>} />
+                <Route path="/login" element={<Login/>} />
             </Routes>
         </Body>
         <Footer/>

@@ -19,8 +19,14 @@ export default function NavMenu() {
 
                     <PhosLink
                         href="/register"
-                        icon="ph ph-user"
+                        icon="ph ph-user-add"
                         text="Register"
+                    />
+
+                    <PhosLink
+                        href="/login"
+                        icon="ph ph-user"
+                        text="Login"
                     />
                 </li>
             </ul>

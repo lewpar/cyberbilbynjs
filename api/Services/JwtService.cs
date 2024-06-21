@@ -17,8 +17,8 @@ public class JwtService
 
     public string GenerateJwt(User user)
     {
-        var jwtIssuer = configuration["Jwt:Issuer"];
-        var jwtAudience = configuration["Jwt:Audience"];
+        var jwtIssuer = configuration["Endpoints:Api"];
+        var jwtAudience = configuration["Endpoints:React"];
         var jwtKey = configuration["Jwt:Key"];
 
         if (string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience) || string.IsNullOrEmpty(jwtKey))
@@ -29,10 +29,11 @@ public class JwtService
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, user.Role.ToString(), ClaimValueTypes.String)
         };
 
         var token = new JwtSecurityToken(
