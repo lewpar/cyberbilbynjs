@@ -28,6 +28,12 @@ export default function NavMenu() {
                         icon="ph ph-user"
                         text="Login"
                     />
+
+                    <PhosLink
+                        href="/test"
+                        icon="ph ph-user"
+                        text="Test"
+                    />
                 </li>
             </ul>
         </div>

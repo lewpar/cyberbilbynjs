@@ -51,16 +51,6 @@ export async function loginUser(username: string, password: string): Promise<Bas
             return await response.json() as BasicApiResponse;
         }
 
-        let response2 = await fetch(`${process.env.REACT_APP_API_URL}/api/account/test`, { 
-            mode:"cors",
-            method: "GET",
-            credentials: "include"
-        });
-
-        if(!response2.ok) {
-            console.log(`Failed test with error: ${response2.status} : ${response2.statusText}`);
-        }
-
         return { success: true, message: "Account logged in" } as BasicApiResponse;
     }
     catch(error) {
