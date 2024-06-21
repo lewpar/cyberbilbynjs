@@ -1,6 +1,9 @@
 using CyberBilbyApi.Database;
-
+using CyberBilbyApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace CyberBilbyApi;
 
@@ -15,6 +18,9 @@ public class Program
         var app = builder.Build();
 
         RunDatabaseMigrations(app);
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         //app.UseHttpsRedirection();
         app.MapControllers();
@@ -48,6 +54,40 @@ public class Program
 
             db.UseMySql(mySqlConn, mySqlVersion);
         });
+
+        var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+        var jwtAudience = builder.Configuration["Jwt:Audience"];
+        var jwtKey = builder.Configuration["Jwt:Key"];
+
+        if(string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience) || string.IsNullOrEmpty(jwtKey))
+        {
+            throw new NullReferenceException("One or more Jwt settings are missing or empty.");
+        }
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = jwtIssuer,
+                ValidAudience = jwtAudience,
+
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            };
+        });
+
+        services.AddAuthorization();
+
+        services.AddScoped<JwtService>();
     }
 
     static void RunDatabaseMigrations(WebApplication app)

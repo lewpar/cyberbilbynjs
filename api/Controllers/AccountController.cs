@@ -2,7 +2,8 @@
 using CyberBilbyApi.Controllers.Response;
 using CyberBilbyApi.Database;
 using CyberBilbyApi.Database.Tables;
-
+using CyberBilbyApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,46 +16,49 @@ namespace CyberBilbyApi.Controllers;
 public class AccountController : Controller
 {
     private readonly CyberBilbyDbContext dbContext;
+    private readonly JwtService jwtService;
 
-    public AccountController(CyberBilbyDbContext dbContext)
+    public AccountController(CyberBilbyDbContext dbContext, JwtService jwtService)
     {
         this.dbContext = dbContext;
+        this.jwtService = jwtService;
     }
 
+    [AllowAnonymous]
     [HttpPost("create")]
-    public async Task<IActionResult> CreateAccountAsync([FromBody]RegisterUserDto user)
+    public async Task<IActionResult> CreateAccountAsync([FromBody]RegisterAccountDto account)
     {
-        if(user is null)
+        if(account is null)
         {
             return BadRequest(new BasicApiResponse(false, "You must supply a user to be created."));
         }
 
-        if(string.IsNullOrWhiteSpace(user.DisplayName))
+        if(string.IsNullOrWhiteSpace(account.DisplayName))
         {
             return BadRequest(new BasicApiResponse(false, "You must supply a display name."));
         }
 
-        if(string.IsNullOrWhiteSpace(user.Username))
+        if(string.IsNullOrWhiteSpace(account.Username))
         {
             return BadRequest(new BasicApiResponse(false, "You must supply a username."));
         }
 
-        if (string.IsNullOrWhiteSpace(user.Password))
+        if (string.IsNullOrWhiteSpace(account.Password))
         {
             return BadRequest(new BasicApiResponse(false, "You must supply a password."));
         }
 
-        if (string.IsNullOrWhiteSpace(user.ConfirmPassword))
+        if (string.IsNullOrWhiteSpace(account.ConfirmPassword))
         {
             return BadRequest(new BasicApiResponse(false, "You must supply a confirmation password."));
         }
 
-        if (user.Password != user.ConfirmPassword)
+        if (account.Password != account.ConfirmPassword)
         {
             return BadRequest(new BasicApiResponse(false, "Your passwords do not match."));
         }
 
-        var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, user.Username.ToLower()));
+        var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, account.Username.ToLower()));
         if(existingUser is not null)
         {
             return BadRequest(new BasicApiResponse(false, "Username already taken."));
@@ -62,9 +66,9 @@ public class AccountController : Controller
 
         await dbContext.AddAsync(new User()
         {
-            DisplayName = user.DisplayName,
-            Username = user.Username.ToLower(),
-            Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+            DisplayName = account.DisplayName,
+            Username = account.Username.ToLower(),
+            Password = BCrypt.Net.BCrypt.HashPassword(account.Password)
         });
 
         var result = await dbContext.SaveChangesAsync();
@@ -75,5 +79,46 @@ public class AccountController : Controller
         }
 
         return Ok(new BasicApiResponse(true, "Account created."));
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginAsync([FromBody]LoginAccountDto account)
+    {
+        if (string.IsNullOrWhiteSpace(account.Username))
+        {
+            return BadRequest(new BasicApiResponse(false, "You must supply a username."));
+        }
+
+        if (string.IsNullOrWhiteSpace(account.Password))
+        {
+            return BadRequest(new BasicApiResponse(false, "You must supply a password."));
+        }
+
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, account.Username.ToLower()));
+        if(user is null)
+        {
+            return BadRequest(new BasicApiResponse(false, "Invalid username or password."));
+        }
+
+        var validPassword = BCrypt.Net.BCrypt.Verify(account.Password, user.Password);
+        if(!validPassword)
+        {
+            return BadRequest(new BasicApiResponse(false, "Invalid username or password."));
+        }
+
+        var token = jwtService.GenerateJwt(user);
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false, // Change in PROD
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddMinutes(120)
+        };
+
+        Response.Cookies.Append("jwt", token, cookieOptions);
+
+        return Ok(new BasicApiResponse(true, "Logged in."));
     }
 }
