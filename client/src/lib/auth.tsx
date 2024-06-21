@@ -61,7 +61,7 @@ export function clearUserAccess() {
     clearCookie("jwt"); // Server session
 }
 
-// Curtesy of https://stackoverflow.com/questions/51109559/get-cookie-with-react
+// Courtesy of https://stackoverflow.com/questions/51109559/get-cookie-with-react
 function getCookie(key: string): string | undefined {
     let b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
 
