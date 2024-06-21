@@ -1,7 +1,10 @@
-import { canAccessProtectedRoute, isLoggedIn } from "../lib/auth";
+import useAuth from "../hooks/useAuth";
+import { canAccessProtectedRoute } from "../lib/auth";
 import PhosLink from "./PhosLink";
 
 export default function NavMenu() {
+    let [user] = useAuth();
+    
     return (
         <div>
             <ul>
@@ -19,7 +22,7 @@ export default function NavMenu() {
                     />
 
                     {
-                        !isLoggedIn() ?
+                        !user?.loggedIn ?
                         <PhosLink
                             href="/register"
                             icon="ph ph-user-add"
@@ -29,7 +32,7 @@ export default function NavMenu() {
 
 
                     {
-                        !isLoggedIn() ?
+                        !user?.loggedIn ?
                         <PhosLink
                             href="/login"
                             icon="ph ph-user"

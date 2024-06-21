@@ -3,7 +3,7 @@ type ProtectedRoute = {
     roles: string[];
 }
 
-type UserAccess = {
+export type UserAccess = {
     role: string;
     loggedIn: boolean;
 }
@@ -38,32 +38,35 @@ export function canAccessProtectedRoute(route: string): boolean {
     return true;
 }
 
-export function isLoggedIn(): boolean {
-    let access = getUserAccess();
-    if(!access) {
-        return false;
-    }
-
-    return true;
-}
-
-function getUserAccess(): UserAccess | null {
+export function getUserAccess(): UserAccess {
     let cookie = getCookie("cbusr");
     if(!cookie) {
-        return null;
+        return { loggedIn: false } as UserAccess;
     }
 
     let access = JSON.parse(atob(decodeURIComponent(cookie))) as UserAccess;
     if(!access) {
-        return null;
+        return { loggedIn: false } as UserAccess;
     }
 
     return access;
 }
 
+export function clearUserAccess() {
+    if(!getCookie("cbusr")) {
+        return;
+    }
+
+    clearCookie("cbusr");
+}
+
 // Curtesy of https://stackoverflow.com/questions/51109559/get-cookie-with-react
-export function getCookie(key: string): string | undefined {
+function getCookie(key: string): string | undefined {
     let b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
 
     return b ? b.pop() : "";
+}
+
+function clearCookie(key: string) {
+    document.cookie = key + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
