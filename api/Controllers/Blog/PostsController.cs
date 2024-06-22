@@ -22,12 +22,17 @@ public class PostsController : Controller
     public async Task<IActionResult> GetAsync()
     {
         var posts = await dbContext.Posts.Include(p => p.Author).ToListAsync();
-        var mapped = new List<BlogPost>();
 
-        foreach(var post in posts)
+        var mapped = posts.Select(post =>
         {
-            mapped.Add(new BlogPost(post.Title ?? "Untitled", post.ShortContent ?? string.Empty, post.Content ?? string.Empty, post.Author?.DisplayName ?? "Anonymous"));
-        }
+            return new BlogPost()
+            {
+                Title = post.Title ?? "Untitled",
+                ShortContent = post.ShortContent ?? string.Empty,
+                Content = post.Content ?? string.Empty,
+                Author = post.Author?.DisplayName ?? "Anonymous"
+            };
+        }).ToList();
 
         return Json(mapped);
     }

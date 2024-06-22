@@ -1,3 +1,9 @@
 namespace CyberBilbyApi.Controllers.Blog.Models;
 
-public record BlogPost(string title, string shortContent, string content, string author);
+public class BlogPost
+{
+    public string Title { get; set; }
+    public string ShortContent { get; set; }
+    public string Content { get; set; }
+    public string Author { get; set; }
+}
