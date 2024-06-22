@@ -5,8 +5,12 @@ type ProtectedRoute = {
 
 const protectedRoutes: ProtectedRoute[] = [
     {
-        route: "/test",
-        roles: [ "administrator" ]
+        route: "/author",
+        roles: [ "user", "author", "administrator" ]
+    },
+    {
+        route: "/author/create",
+        roles: [ "user", "author", "administrator" ]
     }
 ];
 
@@ -30,15 +34,15 @@ export class UserAccess {
 export function getUserAccess(): UserAccess {
     let cookie = getCookie("cbusr");
     if(!cookie) {
-        return { loggedIn: false } as UserAccess;
+        return new UserAccess("", false);
     }
 
     let access = JSON.parse(atob(decodeURIComponent(cookie))) as UserAccess;
     if(!access) {
-        return { loggedIn: false } as UserAccess;
+        return new UserAccess("", false);
     }
 
-    return access;
+    return new UserAccess(access.role, access.loggedIn);
 }
 
 export function clearUserAccess() {

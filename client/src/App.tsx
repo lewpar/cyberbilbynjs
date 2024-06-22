@@ -6,9 +6,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Blog from "./pages/Blog";
 import Home from "./pages/Home";
-import Test from "./pages/Test";
 import Logout from "./pages/Logout";
 import Forbidden from "./pages/error/Forbidden";
+import CreatePost from "./pages/author/CreatePost";
+import Author from "./pages/Author";
 
 export default function App() {
     return (
@@ -22,7 +23,8 @@ export default function App() {
 
             <Route path="/forbidden" element={<Forbidden/>} />
 
-            <Route path="/test" element={ <ProtectedRoute><Test/></ProtectedRoute> }  />
+            <Route path="/author" element={ <ProtectedRoute><Author/></ProtectedRoute> } />
+            <Route path="/author/create" element={ <ProtectedRoute><CreatePost/></ProtectedRoute> } />
         </Routes>
     );
 }

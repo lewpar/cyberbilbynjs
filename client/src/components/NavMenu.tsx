@@ -21,36 +21,35 @@ export default function NavMenu() {
                     />
 
                     {
-                        !user?.loggedIn ?
-                        <PhosLink
-                            href="/register"
-                            icon="ph ph-user-add"
-                            text="Register"
-                        /> : ""
-                    }
-
-
-                    {
-                        !user?.loggedIn ?
-                        <PhosLink
-                            href="/login"
-                            icon="ph ph-user"
-                            text="Login"
-                        />
+                        !user.loggedIn ?
+                        <>
+                            <PhosLink
+                                href="/register"
+                                icon="ph ph-user-add"
+                                text="Register"
+                            />
+                            <PhosLink
+                                href="/login"
+                                icon="ph ph-user"
+                                text="Login"
+                            />
+                        </> 
                         :
-                        <PhosLink
-                            href="/logout"
-                            icon="ph ph-user"
-                            text="Logout"
-                        />
+                        <>
+                            <PhosLink
+                                href="/logout"
+                                icon="ph ph-user"
+                                text="Logout"
+                            />
+                        </>
                     }
 
                     { 
-                        user?.canAccessProtectedRoute("/test") ?  
+                        user?.canAccessProtectedRoute("/author") ?  
                         <PhosLink
-                            href="/test"
+                            href="/author"
                             icon="ph ph-user"
-                            text="Test"
+                            text="Author"
                         />
                         : ""
                     }
