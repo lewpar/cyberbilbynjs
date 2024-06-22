@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CyberBilby.Controllers.Blog;
 
 [ApiController]
-[Route("api/blog/posts")]
+[Route("api/blog/[controller]")]
 [EnableCors("MyCorsPolicy")]
 public class PostsController : Controller
 {
@@ -19,7 +19,8 @@ public class PostsController : Controller
         this.dbContext = dbContext;
     }
 
-    public async Task<IActionResult> GetAsync()
+    [HttpGet("/list")]
+    public async Task<IActionResult> ListPostsAsync()
     {
         var posts = await dbContext.Posts.Include(p => p.Author).ToListAsync();
 
