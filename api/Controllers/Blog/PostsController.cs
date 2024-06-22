@@ -25,7 +25,7 @@ public class PostsController : Controller
 
         var mapped = posts.Select(post =>
         {
-            return new BlogPost()
+            return new BlogPostDto()
             {
                 Title = post.Title ?? "Untitled",
                 ShortContent = post.ShortContent ?? string.Empty,
