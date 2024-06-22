@@ -27,7 +27,7 @@ export class UserAccess {
             route = route.slice(0, route.length - 1);
         }
 
-        let result = protectedRoutes.find(pr => pr.route === route && pr.roles.includes(this.role.toLowerCase()));
+        let result = protectedRoutes.some(pr => pr.route === route && pr.roles.includes(this.role.toLowerCase()));
         if(!result) {
             return false;
         }
