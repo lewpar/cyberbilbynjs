@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 namespace CyberBilby.Controllers.Blog;
 
 [ApiController]
-[Route("api/blog/[controller]")]
+[Route("api/[controller]")]
 [EnableCors("MyCorsPolicy")]
-public class PostsController : Controller
+public class BlogController : Controller
 {
     private readonly CyberBilbyDbContext dbContext;
 
-    public PostsController(CyberBilbyDbContext dbContext)
+    public BlogController(CyberBilbyDbContext dbContext)
     {
         this.dbContext = dbContext;
     }
