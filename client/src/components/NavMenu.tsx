@@ -1,5 +1,4 @@
 import useAuth from "../hooks/useAuth";
-import { canAccessProtectedRoute } from "../lib/auth";
 import PhosLink from "./PhosLink";
 
 export default function NavMenu() {
@@ -46,9 +45,8 @@ export default function NavMenu() {
                         />
                     }
 
-
                     { 
-                        canAccessProtectedRoute("/test") ?  
+                        user?.canAccessProtectedRoute("/test") ?  
                         <PhosLink
                             href="/test"
                             icon="ph ph-user"

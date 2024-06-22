@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { loginUser } from "../lib/user";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import Layout from "../components/Layout";
+import Layout from "../components/layout/Layout";
 
 export default function Login() {
     let [error, setError] = useState("");

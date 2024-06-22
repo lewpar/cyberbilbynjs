@@ -3,11 +3,6 @@ type ProtectedRoute = {
     roles: string[];
 }
 
-export type UserAccess = {
-    role: string;
-    loggedIn: boolean;
-}
-
 const protectedRoutes: ProtectedRoute[] = [
     {
         route: "/test",
@@ -15,27 +10,21 @@ const protectedRoutes: ProtectedRoute[] = [
     }
 ];
 
-function canRoleAccessRoute(role: string, route: string): boolean {
-    let result = protectedRoutes.find(pr => pr.route === route && pr.roles.includes(role));
+export class UserAccess {
+    constructor(public role: string, public loggedIn: boolean) {}
 
-    if(!result) {
-        return false;
+    canAccessProtectedRoute(route: string): boolean {
+        if(!this.loggedIn) {
+            return false;
+        }
+
+        let result = protectedRoutes.find(pr => pr.route === route && pr.roles.includes(this.role));
+        if(!result) {
+            return false;
+        }
+    
+        return true;
     }
-
-    return true;
-}
-
-export function canAccessProtectedRoute(route: string): boolean {
-    let access = getUserAccess();
-    if(!access) {
-        return false;
-    }
-
-    if(!canRoleAccessRoute(access.role, route)) {
-        return false;
-    }
-
-    return true;
 }
 
 export function getUserAccess(): UserAccess {

@@ -1,5 +1,5 @@
-import Footer from "./layout/Footer";
-import Header from "./layout/Header";
+import Footer from "./Footer";
+import Header from "./Header";
 
 export default function Layout({ children }: { children: any }) {
     return <>

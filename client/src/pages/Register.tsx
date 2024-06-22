@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { createUser } from "../lib/user";
-import Layout from "../components/Layout";
+import Layout from "../components/layout/Layout";
 import useAuth from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 

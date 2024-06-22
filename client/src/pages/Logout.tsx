@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import Layout from "../components/Layout";
+import Layout from "../components/layout/Layout";
 
 export default function Logout() {
     let [loggedOut, setLoggedOut] = useState(false);

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getPosts } from "../lib/blog";
 import { BlogPost } from "../lib/types/blog-types";
 import BlogPostCard from "../components/BlogPostCard";
-import Layout from "../components/Layout";
+import Layout from "../components/layout/Layout";
 
 export default function Blog() {
     let [posts, setPosts] = useState<BlogPost[]>();
