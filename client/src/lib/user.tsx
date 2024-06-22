@@ -2,7 +2,7 @@ import { BasicApiResponse } from "./types/api-types";
 
 export async function createUser(displayName: string, username: string, password: string, confirmPassword: string): Promise<BasicApiResponse> {
     try {
-        let response = await fetch(`${process.env.REACT_APP_API_URL}/api/account/create`, { 
+        let response = await fetch(`${process.env.REACT_APP_API_URL}/account/create`, { 
             mode:"cors",
             method: "POST",
             headers: {
@@ -32,7 +32,7 @@ export async function createUser(displayName: string, username: string, password
 
 export async function loginUser(username: string, password: string): Promise<BasicApiResponse> {
     try {
-        let response = await fetch(`${process.env.REACT_APP_API_URL}/api/account/login`, { 
+        let response = await fetch(`${process.env.REACT_APP_API_URL}/account/login`, { 
             mode:"cors",
             method: "POST",
             credentials: "include", // Must be included to save the Http-Only cookie provided by Set-Cookie header
