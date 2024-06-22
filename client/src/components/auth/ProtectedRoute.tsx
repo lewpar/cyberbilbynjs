@@ -12,6 +12,7 @@ export default function ProtectedRoute({ children }: { children: any }) {
     }
 
     if(!isAuthorized && user.isLoggedIn) {
+        console.log(user);
         return <Navigate to="/forbidden"/>
     }
 
