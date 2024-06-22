@@ -50,8 +50,7 @@ export function clearUserAccess() {
         return;
     }
 
-    clearCookie("cbusr"); // Client session
-    clearCookie("jwt"); // Server session
+    clearCookie("cbusr");
 }
 
 // Courtesy of https://stackoverflow.com/questions/51109559/get-cookie-with-react
