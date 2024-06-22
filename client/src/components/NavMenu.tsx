@@ -2,7 +2,7 @@ import useAuth from "../hooks/useAuth";
 import PhosLink from "./PhosLink";
 
 export default function NavMenu() {
-    let [user] = useAuth();
+    let [user, /*logout*/, /*login*/] = useAuth();
     
     return (
         <div>
@@ -21,7 +21,7 @@ export default function NavMenu() {
                     />
 
                     {
-                        !user.loggedIn ?
+                        !user.isLoggedIn ?
                         <>
                             <PhosLink
                                 href="/register"

@@ -10,9 +10,9 @@ export default function Register() {
 
     let [hasSucceeded, setHasSucceeded] = useState(false);
 
-    let [user] = useAuth();
+    let [user, /*logout*/, /*login*/] = useAuth();
 
-    if(user.loggedIn) {
+    if(user.isLoggedIn) {
         return <Navigate to="/"/>
     }
 

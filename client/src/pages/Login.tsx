@@ -10,10 +10,10 @@ export default function Login() {
 
     let navigate = useNavigate();
 
-    let [user,,,login] = useAuth();
+    let [user, /*logout*/, login] = useAuth();
     let returnRoute: string = useLocation().state;
 
-    if(user.loggedIn) {
+    if(user.isLoggedIn) {
         return <Navigate to="/"/>
     }
 

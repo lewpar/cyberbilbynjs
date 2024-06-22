@@ -15,14 +15,14 @@ const protectedRoutes: ProtectedRoute[] = [
 ];
 
 export class UserAccess {
-    constructor(public role: string, public loggedIn: boolean) {}
+    constructor(public role: string, public isLoggedIn: boolean) {}
 
     canAccessProtectedRoute(route: string): boolean {
-        if(!this.loggedIn) {
+        if(!this.isLoggedIn) {
             return false;
         }
 
-        let result = protectedRoutes.find(pr => pr.route === route && pr.roles.includes(this.role));
+        let result = protectedRoutes.find(pr => pr.route === route && pr.roles.includes(this.role.toLowerCase()));
         if(!result) {
             return false;
         }
@@ -32,25 +32,32 @@ export class UserAccess {
 }
 
 export function getUserAccess(): UserAccess {
-    let cookie = getCookie("cbusr");
+    let cookie = getCookie("jwt");
     if(!cookie) {
         return new UserAccess("", false);
     }
 
-    let access = JSON.parse(atob(decodeURIComponent(cookie))) as UserAccess;
-    if(!access) {
+    let parts = cookie.split('.');
+    if(parts.length < 3) {
+        console.error("Failed to parse JWT session.");
+        return new UserAccess("", false);
+    }
+    
+    let payload = JSON.parse(atob(decodeURIComponent(parts[1])));
+
+    if(!payload.role) {
         return new UserAccess("", false);
     }
 
-    return new UserAccess(access.role, access.loggedIn);
+    return new UserAccess(payload.role, true);
 }
 
-export function clearUserAccess() {
-    if(!getCookie("cbusr")) {
+export function clearSession() {
+    if(!getCookie("jwt")) {
         return;
     }
 
-    clearCookie("cbusr");
+    clearCookie("jwt");
 }
 
 // Courtesy of https://stackoverflow.com/questions/51109559/get-cookie-with-react

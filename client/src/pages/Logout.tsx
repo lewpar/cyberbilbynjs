@@ -5,7 +5,7 @@ import Layout from "../components/layout/Layout";
 
 export default function Logout() {
     let [loggedOut, setLoggedOut] = useState(false);
-    let [,,logout] = useAuth();
+    let [/*user*/, logout, /*login*/] = useAuth();
 
     useEffect(() => {
         logout();

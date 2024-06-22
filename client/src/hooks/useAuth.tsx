@@ -1,17 +1,8 @@
 import { useState } from "react";
-import { clearUserAccess, getUserAccess } from "../lib/auth";
+import { clearSession, getUserAccess } from "../lib/auth";
 
 const useAuth = () => {
     const [user, setUser] = useState(getUserAccess());
-
-    const isLoggedIn = () => {
-        let user = getUserAccess();
-        if(!user) {
-            return false;
-        }
-
-        return user.loggedIn;
-    };
 
     const logout = () => {
         let user = getUserAccess();
@@ -19,7 +10,7 @@ const useAuth = () => {
             return;
         }
 
-        clearUserAccess();
+        clearSession();
         setUser(getUserAccess());
     };
 
@@ -27,7 +18,7 @@ const useAuth = () => {
         setUser(getUserAccess);
     };
     
-    return [user, isLoggedIn, logout, login] as const;
+    return [user, logout, login] as const;
 }
 
 export default useAuth;

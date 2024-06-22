@@ -115,31 +115,12 @@ public class AccountController : Controller
 
         var jwtCookie = new CookieOptions
         {
-            HttpOnly = true,
+            HttpOnly = false, // TODO: Implement CSRF token
             Secure = false, // Production will use reverse proxy
             SameSite = SameSiteMode.Strict,
             Expires = DateTime.UtcNow.AddMinutes(120)
         };
         Response.Cookies.Append("jwt", token, jwtCookie);
-
-        var userAccessCookie = new CookieOptions
-        {
-            HttpOnly = false,
-            Secure = false, // Production will use reverse proxy
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddMinutes(120)
-        };
-
-        var userAccess = new Dictionary<string, string>
-        {
-            { "role", user.Role.ToString().ToLower() },
-            { "loggedIn", "true" }
-        };
-
-        var ms = new MemoryStream();
-        var serialized = JsonSerializer.SerializeAsync(ms, userAccess);
-
-        Response.Cookies.Append("cbusr", Convert.ToBase64String(ms.ToArray()), userAccessCookie);
 
         return Ok(new BasicApiResponse(true, "Logged in."));
     }
