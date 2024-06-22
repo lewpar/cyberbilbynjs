@@ -6,10 +6,11 @@ const useAuth = () => {
 
     const logout = () => {
         let user = getUserAccess();
+        console.log("logout1");
         if(!user) {
             return;
         }
-
+        console.log("logout2");
         clearSession();
         setUser(getUserAccess());
     };

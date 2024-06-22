@@ -62,6 +62,8 @@ export function clearSession() {
         return;
     }
 
+    console.log("logout3");
+
     clearCookie("jwt");
 }
 
@@ -72,6 +74,6 @@ function getCookie(key: string): string | undefined {
     return b ? b.pop() : "";
 }
 
-function clearCookie(key: string) {
-    document.cookie = key + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function clearCookie(name: string) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
 }
