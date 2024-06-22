@@ -15,7 +15,7 @@ const useAuth = () => {
     };
 
     const login = () => {
-        setUser(getUserAccess);
+        setUser(getUserAccess());
     };
     
     return [user, logout, login] as const;
