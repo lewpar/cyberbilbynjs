@@ -62,8 +62,6 @@ export function clearSession() {
         return;
     }
 
-    console.log("logout3");
-
     clearCookie("jwt");
 }
 
