@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using System.Text.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CyberBilbyApi.Controllers;
 
@@ -115,7 +116,7 @@ public class AccountController : Controller
 
         var jwtCookie = new CookieOptions
         {
-            HttpOnly = false, // TODO: Implement CSRF token
+            HttpOnly = true,
             Secure = false, // Production will use reverse proxy
             SameSite = SameSiteMode.Strict,
             Expires = DateTime.UtcNow.AddMinutes(120)
@@ -123,5 +124,49 @@ public class AccountController : Controller
         Response.Cookies.Append("jwt", token, jwtCookie);
 
         return Ok(new BasicApiResponse(true, "Logged in."));
+    }
+
+    [Authorize]
+    [HttpGet("logout")]
+    public async Task<IActionResult> LogoutAsync()
+    {
+        var jwtCookie = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false, // Production will use reverse proxy
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(-1)
+        };
+        Response.Cookies.Append("jwt", "", jwtCookie);
+
+        return Ok(new BasicApiResponse(true, "Logged out."));
+    }
+
+    [Authorize]
+    [HttpGet("whoami")]
+    public async Task<IActionResult> WhoAmIAsync()
+    {
+        var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+        if(userIdClaim is null)
+        {
+            return BadRequest(new BasicApiResponse(false, "Invalid session."));
+        }
+
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return BadRequest(new BasicApiResponse(false, "Invalid session. Parse failed."));
+        }
+
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user is null)
+        {
+            return BadRequest(new BasicApiResponse(false, "Invalid session."));
+        }
+
+        return Ok(new WhoAmIResponse(true, "")
+        {
+            Role = user.Role.ToString(),
+            IsLoggedIn = true
+        });
     }
 }

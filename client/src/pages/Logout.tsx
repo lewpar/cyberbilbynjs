@@ -1,27 +1,24 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuth";
-import Layout from "../components/layout/Layout";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Logout() {
     let [loggedOut, setLoggedOut] = useState(false);
-    let [/*user*/, logout, /*login*/] = useAuth();
+    const auth = useAuth();
 
     useEffect(() => {
-        logout();
+        auth.Logout();
         setLoggedOut(true);
-    }, [logout]);
+    }, [setLoggedOut, auth]);
 
     return (
-        <Layout>
-            <div>
-                {
-                    loggedOut ?
-                    <Navigate to="/"/>
-                    :
-                    <div>Logging out..</div>
-                }
-            </div>
-        </Layout>
+        <div>
+        {
+            loggedOut ?
+            <Navigate to="/"/>
+            :
+            <div>Logging out..</div>
+        }
+        </div>
     );
 }

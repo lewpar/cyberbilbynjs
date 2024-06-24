@@ -10,21 +10,27 @@ import Logout from "./pages/Logout";
 import Forbidden from "./pages/error/Forbidden";
 import CreatePost from "./pages/author/CreatePost";
 import Author from "./pages/Author";
+import Layout from "./components/layout/Layout";
+import { AuthProvider } from "./hooks/useAuth";
 
 export default function App() {
     return (
-        <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/blog" element={<Blog/>} />
+        <AuthProvider>
+            <Layout>
+                <Routes>
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/blog" element={<Blog/>} />
 
-            <Route path="/register" element={<Register/>} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/logout" element={<Logout/>} />
+                    <Route path="/register" element={<Register/>} />
+                    <Route path="/login" element={<Login/>} />
+                    <Route path="/logout" element={<Logout/>} />
 
-            <Route path="/forbidden" element={<Forbidden/>} />
+                    <Route path="/forbidden" element={<Forbidden/>} />
 
-            <Route path="/author" element={ <ProtectedRoute><Author/></ProtectedRoute> } />
-            <Route path="/author/create" element={ <ProtectedRoute><CreatePost/></ProtectedRoute> } />
-        </Routes>
+                    <Route path="/author" element={ <ProtectedRoute><Author/></ProtectedRoute> } />
+                    <Route path="/author/create" element={ <ProtectedRoute><CreatePost/></ProtectedRoute> } />
+                </Routes>
+            </Layout>
+        </AuthProvider>
     );
 }

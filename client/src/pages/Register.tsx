@@ -1,8 +1,7 @@
 import { FormEvent, useState } from "react";
-import { createUser } from "../lib/user";
-import Layout from "../components/layout/Layout";
-import useAuth from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import { createUser } from "../lib/auth";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Register() {
     let [error, setError] = useState("");
@@ -10,9 +9,9 @@ export default function Register() {
 
     let [hasSucceeded, setHasSucceeded] = useState(false);
 
-    let [user, /*logout*/, /*login*/] = useAuth();
-
-    if(user.isLoggedIn) {
+    const auth = useAuth();
+    
+    if(auth && auth.IsLoggedIn()) {
         return <Navigate to="/"/>
     }
 
@@ -42,33 +41,31 @@ export default function Register() {
     };
 
     return (
-        <Layout>
-            <form onSubmit={onSubmit} method="POST" className="flex flex-col gap-4 p-4">
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="display-name">Display Name</label>
-                    <input name="display-name" type="text" className="border-2 ph-2"/>
-                </div>
+        <form onSubmit={onSubmit} method="POST" className="flex flex-col gap-4 p-4">
+            <div className="flex flex-col gap-1">
+                <label htmlFor="display-name">Display Name</label>
+                <input name="display-name" type="text" className="border-2 ph-2"/>
+            </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="username">Username</label>
-                    <input name="username" type="text" className="border-2 ph-2"/>
-                </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="username">Username</label>
+                <input name="username" type="text" className="border-2 ph-2"/>
+            </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="password">Password</label>
-                    <input name="password" type="password" className="border-2 ph-2"/>
-                </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="password">Password</label>
+                <input name="password" type="password" className="border-2 ph-2"/>
+            </div>
 
-                <div className="flex flex-col gap-1">
-                    <label htmlFor="confirm-password">Confirm Password</label>
-                    <input name="confirm-password" type="password" className="border-2 ph-2"/>
-                </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="confirm-password">Confirm Password</label>
+                <input name="confirm-password" type="password" className="border-2 ph-2"/>
+            </div>
 
-                <button type="submit" className="border-2 p-2 text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 transition">Create Account</button>
+            <button type="submit" className="border-2 p-2 text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 transition">Create Account</button>
 
-                { hasError ? <p className="text-red-500">{error}</p> : "" }
-                { hasSucceeded ? <p className="text-green-500">Account created</p> : "" }
-            </form>
-        </Layout>
+            { hasError ? <p className="text-red-500">{error}</p> : "" }
+            { hasSucceeded ? <p className="text-green-500">Account created</p> : "" }
+        </form>
     );
 }

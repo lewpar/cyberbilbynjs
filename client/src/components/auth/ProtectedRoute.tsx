@@ -1,18 +1,20 @@
 import { Navigate, useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function ProtectedRoute({ children }: { children: any }) {
-    let [user, /*logout*/, /*login*/] = useAuth();
+    const route = useLocation().pathname;
+    const auth = useAuth();
 
-    let route = useLocation().pathname;
-    let isAuthorized = user.canAccessProtectedRoute(route);
+    if(auth.IsInitializing()) {
+        return <div>Loading..</div>
+    }
 
-    if(!isAuthorized && !user.isLoggedIn) {
+    if(!auth || !auth.IsLoggedIn()) {
         return <Navigate to="/login" state={ route /* Return Route */ }/>
     }
 
-    if(!isAuthorized && user.isLoggedIn) {
-        console.log(user);
+    let isAuthorized = auth.CanAccessProtectedRoute(route);
+    if(!isAuthorized) {
         return <Navigate to="/forbidden"/>
     }
 

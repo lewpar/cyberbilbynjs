@@ -99,7 +99,7 @@ public class Program
 
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
 
-                RoleClaimType = "role"
+                RoleClaimType = ClaimTypes.Role
             };
 
             // The JWT is sent as a HTTP-Only cookie and is not accessible by the client,
@@ -111,7 +111,8 @@ public class Program
                 {
                     if (context.Request.Cookies.ContainsKey("jwt"))
                     {
-                        context.Token = context.Request.Cookies["jwt"];
+                        var token = context.Request.Cookies["jwt"];
+                        context.Token = token;
                     }
 
                     return Task.CompletedTask;
