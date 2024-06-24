@@ -26,6 +26,7 @@ public class BlogController : Controller
 
     [Authorize(Roles = "User,Author,Administrator")]
     [HttpGet("list")]
+    [Produces("application/json")]
     public async Task<IActionResult> ListPostsAsync()
     {
         var user = User;
@@ -47,6 +48,8 @@ public class BlogController : Controller
 
     [Authorize(Roles = "Author,Administrator")]
     [HttpPost("create")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreateBlogPostDto post)
     {
         if (post is null)

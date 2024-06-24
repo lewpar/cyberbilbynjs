@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace CyberBilbyApi.Controllers;
@@ -30,6 +29,8 @@ public class AccountController : Controller
 
     [AllowAnonymous]
     [HttpPost("create")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> CreateAccountAsync([FromBody]RegisterAccountDto account)
     {
         if(account is null)
@@ -88,6 +89,8 @@ public class AccountController : Controller
 
     [AllowAnonymous]
     [HttpPost("login")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> LoginAsync([FromBody]LoginAccountDto account)
     {
         if (string.IsNullOrWhiteSpace(account.Username))
@@ -128,6 +131,7 @@ public class AccountController : Controller
 
     [Authorize]
     [HttpGet("logout")]
+    [Produces("application/json")]
     public async Task<IActionResult> LogoutAsync()
     {
         var jwtCookie = new CookieOptions
@@ -144,6 +148,7 @@ public class AccountController : Controller
 
     [Authorize]
     [HttpGet("whoami")]
+    [Produces("application/json")]
     public async Task<IActionResult> WhoAmIAsync()
     {
         var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
