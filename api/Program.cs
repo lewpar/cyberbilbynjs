@@ -1,3 +1,4 @@
+using CyberBilbyApi.Controllers.Filters;
 using CyberBilbyApi.Database;
 using CyberBilbyApi.Middleware;
 using CyberBilbyApi.Services;
@@ -41,7 +42,11 @@ public class Program
 
     static void AddServices(WebApplicationBuilder builder, IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers().ConfigureApiBehaviorOptions(options =>
+        {
+            // We have to suppress the ApiController attributes action filter to allow our own filter to be executed.
+            options.SuppressModelStateInvalidFilter = true;
+        });
 
         var reactEndpoint = builder.Configuration["Endpoints:React"];
         if(string.IsNullOrEmpty(reactEndpoint))

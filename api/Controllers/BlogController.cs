@@ -1,3 +1,4 @@
+using CyberBilbyApi.Controllers.Filters;
 using CyberBilbyApi.Controllers.Models;
 using CyberBilbyApi.Controllers.Response;
 using CyberBilbyApi.Database;
@@ -50,6 +51,7 @@ public class BlogController : Controller
     [HttpPost("create")]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [InputValidationActionFilter]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreateBlogPostDto post)
     {
         if (post is null)
