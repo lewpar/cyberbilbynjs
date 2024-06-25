@@ -1,4 +1,4 @@
-namespace CyberBilbyApi.Controllers.Models;
+namespace CyberBilbyApi.Controllers.Models.Response;
 
 public class BlogPostDto
 {

@@ -1,4 +1,5 @@
-﻿using CyberBilbyApi.Controllers.Models;
+﻿using CyberBilbyApi.Controllers.Filters;
+using CyberBilbyApi.Controllers.Models.Request;
 using CyberBilbyApi.Controllers.Response;
 using CyberBilbyApi.Database;
 using CyberBilbyApi.Database.Tables;
@@ -31,39 +32,15 @@ public class AccountController : Controller
     [HttpPost("create")]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [InputValidationActionFilter]
     public async Task<IActionResult> CreateAccountAsync([FromBody]RegisterAccountDto account)
     {
-        if(account is null)
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a user to be created."));
-        }
-
-        if(string.IsNullOrWhiteSpace(account.DisplayName))
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a display name."));
-        }
-
-        if(string.IsNullOrWhiteSpace(account.Username))
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a username."));
-        }
-
-        if (string.IsNullOrWhiteSpace(account.Password))
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a password."));
-        }
-
-        if (string.IsNullOrWhiteSpace(account.ConfirmPassword))
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a confirmation password."));
-        }
-
         if (account.Password != account.ConfirmPassword)
         {
             return BadRequest(new BasicApiResponse(false, "Your passwords do not match."));
         }
 
-        var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, account.Username.ToLower()));
+        var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, account.Username!.ToLower()));
         if(existingUser is not null)
         {
             return BadRequest(new BasicApiResponse(false, "Username already taken."));
@@ -72,7 +49,7 @@ public class AccountController : Controller
         await dbContext.AddAsync(new User()
         {
             DisplayName = account.DisplayName,
-            Username = account.Username.ToLower(),
+            Username = account.Username!.ToLower(),
             Password = BCrypt.Net.BCrypt.HashPassword(account.Password),
             Role = UserRole.User
         });
@@ -91,19 +68,10 @@ public class AccountController : Controller
     [HttpPost("login")]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [InputValidationActionFilter]
     public async Task<IActionResult> LoginAsync([FromBody]LoginAccountDto account)
     {
-        if (string.IsNullOrWhiteSpace(account.Username))
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a username."));
-        }
-
-        if (string.IsNullOrWhiteSpace(account.Password))
-        {
-            return BadRequest(new BasicApiResponse(false, "You must supply a password."));
-        }
-
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, account.Username.ToLower()));
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => string.Equals(u.Username, account.Username!.ToLower()));
         if(user is null)
         {
             return BadRequest(new BasicApiResponse(false, "Invalid username or password."));

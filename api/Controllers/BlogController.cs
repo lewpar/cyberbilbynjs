@@ -1,5 +1,6 @@
 using CyberBilbyApi.Controllers.Filters;
-using CyberBilbyApi.Controllers.Models;
+using CyberBilbyApi.Controllers.Models.Request;
+using CyberBilbyApi.Controllers.Models.Response;
 using CyberBilbyApi.Controllers.Response;
 using CyberBilbyApi.Database;
 using CyberBilbyApi.Database.Tables;
@@ -54,26 +55,6 @@ public class BlogController : Controller
     [InputValidationActionFilter]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreateBlogPostDto post)
     {
-        if (post is null)
-        {
-            return BadRequest(new BasicApiResponse(false, "You need to supply a post to create."));
-        }
-
-        if (string.IsNullOrEmpty(post.Title))
-        {
-            return BadRequest(new BasicApiResponse(false, "You need to supply a title."));
-        }
-
-        if (string.IsNullOrEmpty(post.ShortContent))
-        {
-            return BadRequest(new BasicApiResponse(false, "You need to supply short content."));
-        }
-
-        if (string.IsNullOrEmpty(post.Content))
-        {
-            return BadRequest(new BasicApiResponse(false, "You need to supply content."));
-        }
-
         var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub);
         if (userIdClaim is null || !int.TryParse(userIdClaim.Value, out int userId))
         {
