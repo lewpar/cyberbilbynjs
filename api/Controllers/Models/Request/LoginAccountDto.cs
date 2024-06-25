@@ -6,7 +6,7 @@ namespace CyberBilbyApi.Controllers.Models.Request;
 public class LoginAccountDto
 {
     [Required]
-    [MinLength(8)]
+    [MinLength(4)]
     [MaxLength(32)]
     [RegularExpression("^[A-Za-z0-9]+$", ErrorMessage = "Usernames can only contain alphanumeric characters.")]
     [DisplayName("Username")]
