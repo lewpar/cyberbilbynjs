@@ -1,4 +1,5 @@
 using CyberBilbyApi.Database;
+using CyberBilbyApi.Middleware;
 using CyberBilbyApi.Services;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +22,9 @@ public class Program
         var app = builder.Build();
 
         RunDatabaseMigrations(app);
+
+        // Allows me to debug requests/responses at a low level.
+        app.UseMiddleware<DebugMiddleware>();
 
         // UseCors should run before UseAuthentication/Authorization because it does preflight checks to ensure the transport is safe.
         // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-8.0#middleware-order
