@@ -8,4 +8,5 @@ export type WhoAmIResponse = {
     message: string;
     role: string;
     isLoggedIn: boolean;
+    displayName: string;
 };

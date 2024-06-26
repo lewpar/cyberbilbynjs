@@ -5,6 +5,7 @@ import { BasicApiResponse } from "../lib/types/api-types";
 export type UserSession = {
     Role: string;
     IsLoggedIn: boolean;
+    DisplayName: string;
 };
 
 export type UserSessionHandler = {
@@ -48,6 +49,7 @@ function useAuthProvider(): UserSessionHandler {
                 let newSession = {
                     Role: whoAmIResult.role,
                     IsLoggedIn: true,
+                    DisplayName: whoAmIResult.displayName
                 } as UserSession;
         
                 setInternalSession(newSession);
@@ -77,6 +79,7 @@ function useAuthProvider(): UserSessionHandler {
         let newSession = {
             Role: whoAmIResult.role,
             IsLoggedIn: whoAmIResult.isLoggedIn,
+            DisplayName: whoAmIResult.displayName
         } as UserSession;
 
         setInternalSession(newSession);
@@ -91,8 +94,9 @@ function useAuthProvider(): UserSessionHandler {
         }
 
         let newSession = {
-            Role:"Unauthenticated", 
-            IsLoggedIn: false
+            Role: "Unauthenticated", 
+            IsLoggedIn: false,
+            DisplayName: "Anonymous"
         } as UserSession;
 
         setInternalSession(newSession);

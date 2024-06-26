@@ -7,6 +7,7 @@ public class WhoAmIResponse : IApiResponse
 
     public string? Role { get; set; }
     public bool IsLoggedIn { get; set; }
+    public string? DisplayName { get; set; }
 
     public WhoAmIResponse(bool success, string message)
     {

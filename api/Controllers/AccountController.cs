@@ -139,7 +139,8 @@ public class AccountController : Controller
         return Ok(new WhoAmIResponse(true, "")
         {
             Role = user.Role.ToString(),
-            IsLoggedIn = true
+            IsLoggedIn = true,
+            DisplayName = user.DisplayName
         });
     }
 }
