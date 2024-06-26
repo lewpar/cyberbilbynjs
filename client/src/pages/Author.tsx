@@ -1,14 +1,9 @@
-import PhosLink from "../components/PhosLink";
+import AuthorPanel from "../components/auth/AuthorPanel";
 
 export default function Author() {
     return (
-        <>
+        <AuthorPanel>
             <div>Author Page</div>
-            <PhosLink
-                text="Create Post"
-                href="/author/create"
-                icon=""
-            />
-        </>
+        </AuthorPanel>
     );
 }
