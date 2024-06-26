@@ -1,5 +1,7 @@
 export default function Home() {
     return (
-        <div>Hello from the home page!</div>
+        <div className="flex flex-col">
+            Home page
+        </div>
     );
 }

@@ -22,7 +22,7 @@ export default function Blog() {
                 { 
                     posts.length > 0 ?
                     posts.map((post, index) => 
-                        <BlogPostCard key={index} title={post.title} content={post.shortContent} />
+                        <BlogPostCard key={index} post={post} />
                     ) : "No posts were found."
                 }
             </div>

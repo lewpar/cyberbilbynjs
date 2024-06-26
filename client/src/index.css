@@ -13,7 +13,20 @@ body {
 
 #root {
     flex: 1;
+}
 
-    display: flex;
-    flex-direction: column;
+
+/* GLOBAL CONTROLS */
+.nice-field {
+    @apply bg-stone-900 rounded-sm p-2 border border-stone-800;
+}
+
+.nice-button {
+    @apply bg-blue-900 p-4 rounded-md transition-colors;
+}
+.nice-button:hover {
+    @apply bg-blue-800;
+}
+.nice-button:active {
+    @apply bg-blue-900;
 }
