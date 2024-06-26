@@ -13,7 +13,7 @@ export default function Blog() {
     }, []);
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 p-4">
             <div className="font-bold">Posts</div>
             {
                 posts === undefined ?
@@ -21,8 +21,8 @@ export default function Blog() {
                 <div className="flex flex-col gap-4">
                 { 
                     posts.length > 0 ?
-                    posts.map(post => 
-                        <BlogPostCard title={post.title} content={post.shortContent} />
+                    posts.map((post, index) => 
+                        <BlogPostCard key={index} title={post.title} content={post.shortContent} />
                     ) : "No posts were found."
                 }
             </div>

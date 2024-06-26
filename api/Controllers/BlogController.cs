@@ -26,7 +26,7 @@ public class BlogController : Controller
         this.dbContext = dbContext;
     }
 
-    [Authorize(Roles = "User,Author,Administrator")]
+    [AllowAnonymous]
     [HttpGet("list")]
     [Produces("application/json")]
     public async Task<IActionResult> ListPostsAsync()
