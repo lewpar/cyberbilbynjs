@@ -122,7 +122,6 @@ function useAuthProvider(): UserSessionHandler {
             route = route.slice(0, route.length - 1);
         }
 
-        console.log(internalSession);
         let result = ProtectedRoutes.some(pr => pr.route === route && pr.roles.includes(internalSession.Role.toLowerCase()));
         if(!result) {
 
