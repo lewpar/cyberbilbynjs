@@ -1,12 +1,12 @@
 .n-nav-link {
-    @apply transition-all px-4 py-2 justify-start;
+    @apply transition-all px-4 py-2 justify-start border-l-stone-800;
 }
 .n-nav-link:hover {
-    @apply bg-stone-900;
+    @apply bg-stone-900 border-l-4 border-l-stone-800;
 }
 
 .n-nav-link-current {
-    @apply transition-all bg-blue-900 rounded-r-md px-4 py-2 mr-2 justify-start;
+    @apply transition-all bg-blue-900 rounded-r-md px-4 py-2 mr-2 justify-start border-l-4 border-l-blue-500;
 }
 .n-nav-link-current:hover {
     @apply bg-blue-800;
