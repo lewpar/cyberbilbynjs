@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CyberBilbyApi.Controllers;
 
@@ -31,7 +32,6 @@ public class BlogController : Controller
     [Produces("application/json")]
     public async Task<IActionResult> ListPostsAsync()
     {
-        var user = User;
         var posts = await dbContext.Posts.Include(p => p.Author).ToListAsync();
 
         var mapped = posts.Select(post =>
@@ -39,6 +39,7 @@ public class BlogController : Controller
             return new BlogPostDto()
             {
                 Title = post.Title ?? "Untitled",
+                Slug = post.Slug ?? string.Empty,
                 ShortContent = post.ShortContent ?? string.Empty,
                 Content = post.Content ?? string.Empty,
                 Author = post.Author?.DisplayName ?? "Anonymous"
@@ -48,6 +49,29 @@ public class BlogController : Controller
         return Json(mapped);
     }
 
+    [AllowAnonymous]
+    [HttpGet("post/{slug}")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    public async Task<IActionResult> GetPostBySlugAsync(string? slug)
+    {
+        var post = await dbContext.Posts.FirstOrDefaultAsync(p => p.Slug == slug);
+
+        if(post is null)
+        {
+            return BadRequest(new BasicApiResponse(false, "No post found with that slug."));
+        }
+
+        return Json(new BlogPostDto()
+        {
+            Title = post.Title ?? "Untitled",
+            Slug = post.Slug ?? string.Empty,
+            ShortContent = post.ShortContent ?? string.Empty,
+            Content = post.Content ?? string.Empty,
+            Author = post.Author?.DisplayName ?? "Anonymous"
+        });
+    }
+
     [Authorize(Roles = "Author,Administrator")]
     [HttpPost("create")]
     [Consumes("application/json")]
@@ -55,7 +79,7 @@ public class BlogController : Controller
     [InputValidationActionFilter]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreateBlogPostDto post)
     {
-        var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub);
+        var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
         if (userIdClaim is null || !int.TryParse(userIdClaim.Value, out int userId))
         {
             return BadRequest(new BasicApiResponse(false, "Invalid session."));
@@ -70,6 +94,7 @@ public class BlogController : Controller
         await dbContext.Posts.AddAsync(new Post()
         {
             Title = post.Title,
+            Slug = post.Slug,
             ShortContent = post.ShortContent,
             Content = post.Content,
             Author = user

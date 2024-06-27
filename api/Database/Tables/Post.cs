@@ -14,6 +14,9 @@ public class Post
     [Column("title")]
     public string? Title { get; set; }
 
+    [Column("slug")]
+    public string? Slug { get; set; }
+
     [Column("short_content")]
     public string? ShortContent { get; set; }
 

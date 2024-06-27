@@ -12,6 +12,7 @@ import CreatePost from "./pages/author/CreatePost";
 import Author from "./pages/Author";
 import Layout from "./components/layout/Layout";
 import { AuthProvider } from "./hooks/useAuth";
+import BlogPost from "./pages/blog/BlogPost";
 
 export default function App() {
     return (
@@ -19,7 +20,9 @@ export default function App() {
             <Layout>
                 <Routes>
                     <Route path="/" element={<Home/>} />
+
                     <Route path="/blog" element={<Blog/>} />
+                    <Route path="/blog/*" element={<BlogPost/>} />
 
                     <Route path="/register" element={<Register/>} />
                     <Route path="/login" element={<Login/>} />

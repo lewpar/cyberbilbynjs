@@ -1,7 +1,7 @@
 import { BasicApiResponse } from "./types/api-types";
-import { BlogPost } from "./types/blog-types";
+import { BlogPostDto } from "./types/blog-types";
 
-export async function getPosts(): Promise<BlogPost[]> {
+export async function getPosts(): Promise<BlogPostDto[]> {
     try {
         let response = await fetch(`${process.env.REACT_APP_API_URL}/blog/list`, { mode:"cors" });
 
@@ -15,8 +15,9 @@ export async function getPosts(): Promise<BlogPost[]> {
         return posts.map((post: any) => {
             return {
                 title: post.title,
+                slug: post.slug,
                 shortContent: post.shortContent
-            } as BlogPost
+            } as BlogPostDto
         });
 
     }
@@ -26,7 +27,24 @@ export async function getPosts(): Promise<BlogPost[]> {
     }
 }
 
-export async function createPost(title: string, shortContent: string, content: string): Promise<BasicApiResponse> {
+export async function getPostBySlug(slug: string): Promise<BlogPostDto | null> {
+    try {
+        let response = await fetch(`${process.env.REACT_APP_API_URL}/blog/post/${slug}`, { mode:"cors" });
+
+        if(!response.ok) {
+            console.log(`Failed to fetch blog post with API error: ${response.status} : ${response.statusText}`);
+            return null;
+        }
+
+        return await response.json() as BlogPostDto;
+    }
+    catch(error) {
+        console.log(`Failed to fetch blog post with error: ${error}`);
+        return null;
+    }
+}
+
+export async function createPost(title: string, slug: string, shortContent: string, content: string): Promise<BasicApiResponse> {
     try {
         let response = await fetch(`${process.env.REACT_APP_API_URL}/blog/create`, { 
             mode:"cors",
@@ -38,6 +56,7 @@ export async function createPost(title: string, shortContent: string, content: s
             },
             body: JSON.stringify({
                 Title: title,
+                Slug: slug,
                 ShortContent: shortContent,
                 Content: content
             })

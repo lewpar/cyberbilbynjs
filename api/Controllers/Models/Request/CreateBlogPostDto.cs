@@ -13,6 +13,12 @@ public class CreateBlogPostDto
 
     [Required]
     [MinLength(1)]
+    [MaxLength(128)]
+    [DisplayName("Slug")]
+    public string? Slug { get; set; }
+
+    [Required]
+    [MinLength(1)]
     [MaxLength(255)]
     [DisplayName("Short Content")]
     public string? ShortContent { get; set; }

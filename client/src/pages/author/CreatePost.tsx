@@ -17,10 +17,11 @@ export default function CreatePost() {
         let formData = new FormData(event.currentTarget);
 
         let title = formData.get("title") as string;
+        let slug = formData.get("slug") as string;
         let shortContent = formData.get("short-content") as string;
         let content = formData.get("content") as string;
 
-        let result = await createPost(title, shortContent, content);
+        let result = await createPost(title, slug, shortContent, content);
 
         if(!result.success) {
             setError(result.message);
@@ -37,6 +38,11 @@ export default function CreatePost() {
                 <div className="flex flex-col gap-1">
                     <label htmlFor="title">Title</label>
                     <input type="text" name="title" className="nice-field"/>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="title">Slug</label>
+                    <input type="text" name="slug" className="nice-field"/>
                 </div>
 
                 <div className="flex flex-col gap-1">

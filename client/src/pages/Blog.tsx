@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../lib/blog";
-import { BlogPost } from "../lib/types/blog-types";
+import { BlogPostDto } from "../lib/types/blog-types";
 import BlogPostCard from "../components/BlogPostCard";
 
 export default function Blog() {
-    let [posts, setPosts] = useState<BlogPost[]>();
+    let [posts, setPosts] = useState<BlogPostDto[]>();
 
     useEffect(() => {
         getPosts().then(posts => {
