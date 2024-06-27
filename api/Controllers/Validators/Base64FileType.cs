@@ -2,5 +2,6 @@
 
 public enum Base64FileType
 {
+    Unknown,
     Image
 }

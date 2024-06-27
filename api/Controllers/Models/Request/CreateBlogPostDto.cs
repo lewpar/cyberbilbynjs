@@ -33,6 +33,7 @@ public class CreateBlogPostDto
 
     [Required]
     [Base64MaxFileSize(size: 5, unit: Base64FileSizeUnits.Megabyte)]
+    [Base64FileType(Base64FileType.Image)]
     [DisplayName("Cover Image")]
     public string? CoverImage { get; set; }
 }
