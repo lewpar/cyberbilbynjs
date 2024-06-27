@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { createPost } from "../../lib/blog";
 import AuthorPanel from "../../components/auth/AuthorPanel";
+import { toBase64String } from "../../lib/network";
 
 export default function CreatePost() {
     let [error, setError] = useState("");
@@ -20,8 +21,10 @@ export default function CreatePost() {
         let slug = formData.get("slug") as string;
         let shortContent = formData.get("short-content") as string;
         let content = formData.get("content") as string;
+        let coverImage = formData.get("cover-image") as File;
+        let coverImageEncoded = await toBase64String(coverImage);
 
-        let result = await createPost(title, slug, shortContent, content);
+        let result = await createPost(title, slug, shortContent, content, coverImageEncoded);
 
         if(!result.success) {
             setError(result.message);
@@ -53,6 +56,11 @@ export default function CreatePost() {
                 <div className="flex flex-col gap-1">
                     <label htmlFor="content">Content</label>
                     <textarea name="content" rows={8} className="nice-field"/>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="cover-image">Cover Image</label>
+                    <input name="cover-image" type="file"></input>
                 </div>
 
                 <button type="submit" className="nice-button">Create Post</button>

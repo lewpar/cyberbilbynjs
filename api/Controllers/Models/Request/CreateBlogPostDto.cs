@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using CyberBilbyApi.Controllers.Validators;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace CyberBilbyApi.Controllers.Models.Request;
 
@@ -28,4 +30,9 @@ public class CreateBlogPostDto
     [MaxLength(25000)]
     [DisplayName("Content")]
     public string? Content { get; set; }
+
+    [Required]
+    [Base64MaxFileSize(size: 5, unit: Base64FileSizeUnits.Megabyte)]
+    [DisplayName("Cover Image")]
+    public string? CoverImage { get; set; }
 }

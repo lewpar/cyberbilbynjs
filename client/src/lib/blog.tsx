@@ -44,7 +44,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPostDto | null> {
     }
 }
 
-export async function createPost(title: string, slug: string, shortContent: string, content: string): Promise<BasicApiResponse> {
+export async function createPost(title: string, slug: string, shortContent: string, content: string, coverImageEncoded: string): Promise<BasicApiResponse> {
     try {
         let response = await fetch(`${process.env.REACT_APP_API_URL}/blog/create`, { 
             mode:"cors",
@@ -58,7 +58,8 @@ export async function createPost(title: string, slug: string, shortContent: stri
                 Title: title,
                 Slug: slug,
                 ShortContent: shortContent,
-                Content: content
+                Content: content,
+                CoverImage: coverImageEncoded
             })
         });
 
